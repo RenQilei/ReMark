@@ -15,6 +15,10 @@ node scripts/setup-remotes.mjs --github '<confirmed-github-url>' --gitee '<confi
 
 Creating repositories, renaming the working branch, committing, tagging, and pushing remain separate confirmed actions. `gh` CLI can be used for GitHub repository creation after authentication; Gitee repository creation requires its web interface or an authorized API token.
 
+## Version decisions
+
+Never assume that a fix, update, or upgrade keeps the current version number. Make an explicit version decision before committing or tagging a release. If the intended next version is unclear, ask the maintainer instead of retaining the current version by default. Never overwrite published artifacts with a different build under the same version or tag.
+
 ## Release channels
 
 - **Prerelease:** Produces ad-hoc-signed DMGs with `unsigned` in the filename and release notes. It must never be presented as a notarized or stable build.

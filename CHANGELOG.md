@@ -2,6 +2,20 @@
 
 All notable changes to Remark are documented here. Versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.1.0-alpha.2] - 2026-11-25
+
+### Fixed
+
+- Prevented long inline code and URLs from overflowing table cells and allowed content-driven table column widths.
+- Preserved the current content block and its viewport position when switching between visual and source modes, including fallback to the nearest surviving block after deletion.
+- Kept native tabs above the application toolbar and scoped save and mode-switch actions to the focused document.
+- Prevented document menu actions from falling back to the first window when no window is focused.
+
+### Changed
+
+- Refined the spacing of the Re and solid-arrow logo and synchronized the ICNS and packaged assets.
+- Added regression coverage for table layout, viewport restoration, and per-document tab isolation.
+
 ## [0.1.0-alpha.1] - 2026-11-25
 
 ### Fixed
