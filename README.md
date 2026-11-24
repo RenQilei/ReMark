@@ -27,18 +27,20 @@ Choose the installer that matches your Mac. To check, choose **Apple menu  > Abo
 
 | Your Mac | Installer |
 | --- | --- |
-| Apple Silicon (M1 or later) | `Remark-<version>-unsigned-arm64.dmg` |
-| Intel | `Remark-<version>-unsigned-x64.dmg` |
+| Apple Silicon (M1 or later) | [Download Remark for Apple Silicon](https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.1/Remark-0.1.0-alpha.1-unsigned-arm64.dmg) |
+| Intel | [Download Remark for Intel](https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.1/Remark-0.1.0-alpha.1-unsigned-x64.dmg) |
 
-1. Open the DMG file from this repository's Releases page.
+1. Open the DMG file from the matching download link above.
 2. Drag **Remark** into **Applications**.
 3. Launch Remark and open a `.md`, `.markdown`, `.mdown`, or `.mkd` file.
+
+For Gitee, use the [Gitee Releases page](https://gitee.com/renqilei/remark/releases). Direct file links there work only after the Gitee Release and its assets have been published; use the GitHub links above meanwhile.
 
 > **Prerelease status:** Current builds use ad-hoc signing and are not signed with an Apple Developer ID or notarized. Review the release notes and verify the checksum before installing. Do not disable Gatekeeper or lower your system security settings. Signed and notarized stable builds will use different release notes.
 
 ### Verify your download
 
-Place the DMG and `SHA256SUMS.txt` in the same directory, then run:
+Download [SHA256SUMS.txt](https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.1/SHA256SUMS.txt), place it in the same directory as the DMG, then run:
 
 ```bash
 shasum -a 256 -c SHA256SUMS.txt

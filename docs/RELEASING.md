@@ -84,6 +84,64 @@ node scripts/publish-gitee-release.mjs --apply
 
 The Gitee scripts are dry-run by default. `--apply` performs remote operations and requires the corresponding environment variables. Tokens are never printed by these scripts.
 
+## Download links and Gitee releases
+
+Never present `<version>` or a filename pattern as a clickable download URL. Public README tables must link to actual release assets, and both language versions must be updated after a release.
+
+Current GitHub asset links use this form:
+
+```text
+https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.1/Remark-0.1.0-alpha.1-unsigned-arm64.dmg
+https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.1/Remark-0.1.0-alpha.1-unsigned-x64.dmg
+https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.1/SHA256SUMS.txt
+```
+
+A Gitee repository and tag can exist without any Gitee Release. There is no valid direct file download until a Release and its attachments have been created. After publishing, the equivalent links are:
+
+```text
+https://gitee.com/renqilei/remark/releases/download/v0.1.0-alpha.1/Remark-0.1.0-alpha.1-unsigned-arm64.dmg
+https://gitee.com/renqilei/remark/releases/download/v0.1.0-alpha.1/Remark-0.1.0-alpha.1-unsigned-x64.dmg
+https://gitee.com/renqilei/remark/releases/download/v0.1.0-alpha.1/SHA256SUMS.txt
+```
+
+To create the current Gitee Release locally:
+
+1. Create a private access token in Gitee with the required repository and Release write permissions.
+2. Export non-secret values:
+
+   ```bash
+   export GITEE_OWNER=renqilei
+   export GITEE_REPO=remark
+   export GITEE_REMOTE=https://gitee.com/renqilei/remark.git
+   export GITEE_PUBLISH=true
+   export TAG=v0.1.0-alpha.1
+   export PRERELEASE=true
+   ```
+
+3. Enter the token without placing it in shell history:
+
+   ```bash
+   read -s -p "Gitee Token: " GITEE_TOKEN
+   echo
+   export GITEE_TOKEN
+   ```
+
+4. Run the dry-run and verify that it lists both DMGs and `SHA256SUMS.txt`:
+
+   ```bash
+   node scripts/publish-gitee-release.mjs
+   ```
+
+5. Create the Release and upload assets:
+
+   ```bash
+   node scripts/publish-gitee-release.mjs --apply
+   ```
+
+6. Confirm the release appears in `https://gitee.com/api/v5/repos/renqilei/remark/releases`, test both direct DMG links, then update `README.md` and `Readme.zh-CN.md` with the actual Gitee asset links. Do not publish the README update before the assets exist.
+
+For GitHub Actions, store `GITEE_TOKEN` as a secret and `GITEE_OWNER`, `GITEE_REPO`, `GITEE_REMOTE`, and `GITEE_PUBLISH` as repository variables. The optional Gitee step in `release.yml` is skipped unless `GITEE_PUBLISH` is exactly `true`.
+
 ## Documentation checklist
 
 When release behavior changes, update both `README.md` and `Readme.zh-CN.md`, including installer names, signing status, checksum instructions, and limitations. Keep maintainer-only details in this file and regenerate screenshots only when the actual UI changes.

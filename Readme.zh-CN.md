@@ -27,18 +27,20 @@ Remark 直接打开本地 Markdown 文件，不需要 Vault、工作区导入、
 
 | 你的 Mac | 安装包 |
 | --- | --- |
-| Apple Silicon（M1 及更新芯片） | `Remark-<version>-unsigned-arm64.dmg` |
-| Intel | `Remark-<version>-unsigned-x64.dmg` |
+| Apple Silicon（M1 及更新芯片） | [下载 Apple Silicon 版 Remark](https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.1/Remark-0.1.0-alpha.1-unsigned-arm64.dmg) |
+| Intel | [下载 Intel 版 Remark](https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.1/Remark-0.1.0-alpha.1-unsigned-x64.dmg) |
 
-1. 在本仓库 Releases 页面下载并打开 DMG 文件。
+1. 点击上方与你的 Mac 匹配的链接，下载并打开 DMG 文件。
 2. 将 **Remark** 拖入 **应用程序**。
 3. 启动 Remark，打开 `.md`、`.markdown`、`.mdown` 或 `.mkd` 文件。
+
+Gitee 用户可访问 [Gitee Releases 页面](https://gitee.com/renqilei/remark/releases)。只有 Gitee Release 和附件实际发布后，那里的文件直链才有效；在此之前请使用上方的 GitHub 下载链接。
 
 > **预发布说明：** 当前安装包使用 ad-hoc 签名，没有 Apple Developer ID 签名，也未经公证。安装前请阅读发布说明并核对校验和。不要关闭 Gatekeeper 或降低系统安全设置。正式签名、公证版本会在发布说明中明确区分。
 
 ### 校验下载文件
 
-将 DMG 和 `SHA256SUMS.txt` 放在同一目录，然后执行：
+下载 [SHA256SUMS.txt](https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.1/SHA256SUMS.txt)，将它与 DMG 放在同一目录，然后执行：
 
 ```bash
 shasum -a 256 -c SHA256SUMS.txt
