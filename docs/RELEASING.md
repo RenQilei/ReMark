@@ -4,7 +4,7 @@ This guide is for maintainers. User installation and source-build instructions b
 
 ## Repository bootstrap
 
-The first public release tag is `v0.1.0-alpha.0`. Before configuring remotes, confirm the GitHub and Gitee repository URLs, public visibility, and the initial public branch. The intended branch is `main`; do not rename or push the current working branch without confirmation.
+The first public release tag is `v0.1.0-alpha.0`. The responsive toolbar fix is released as `v0.1.0-alpha.1`. Before configuring remotes, confirm the GitHub and Gitee repository URLs, public visibility, and the initial public branch. The intended branch is `main`; do not rename or push the current working branch without confirmation.
 
 `scripts/setup-remotes.mjs` validates repository URLs, refuses credential-bearing URLs and existing remote replacement, and performs no changes by default:
 

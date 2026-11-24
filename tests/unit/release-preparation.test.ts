@@ -8,17 +8,17 @@ describe('alpha release preparation', () => {
   it('uses the same alpha version in the package and lockfile', () => {
     const packageJson = JSON.parse(read('package.json'))
     const lockfile = JSON.parse(read('package-lock.json'))
-    expect(packageJson.version).toBe('0.1.0-alpha.0')
-    expect(lockfile.version).toBe('0.1.0-alpha.0')
-    expect(lockfile.packages[''].version).toBe('0.1.0-alpha.0')
-    expect(read('scripts/publish-gitee-release.mjs')).toContain("process.env.npm_package_version ?? '0.1.0-alpha.0'")
+    expect(packageJson.version).toBe('0.1.0-alpha.1')
+    expect(lockfile.version).toBe('0.1.0-alpha.1')
+    expect(lockfile.packages[''].version).toBe('0.1.0-alpha.1')
+    expect(read('scripts/publish-gitee-release.mjs')).toContain("process.env.npm_package_version ?? '0.1.0-alpha.1'")
   })
 
   it('treats hyphenated tags as prereleases', () => {
     const workflow = read('.github/workflows/release.yml')
     expect(workflow).toContain('[[ "${GITHUB_REF_NAME}" == *-* ]]')
     expect(workflow).toContain('echo "prerelease=true" >> "$GITHUB_OUTPUT"')
-    expect(workflow).toContain('v0.1.0-alpha.0')
+    expect(workflow).toContain('v0.1.0-alpha.1')
   })
 
   it('ignores build output, local settings, and signing credentials', () => {

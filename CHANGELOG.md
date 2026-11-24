@@ -2,6 +2,13 @@
 
 All notable changes to Remark are documented here. Versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.1.0-alpha.1] - 2026-11-25
+
+### Fixed
+
+- Kept document status, find, outline, mode switching, and settings accessible at 1024px and narrower window widths.
+- Added real Electron coverage for the responsive toolbar and primary editing controls.
+
 ## [0.1.0-alpha.0] - 2026-11-24
 
 ### Added
