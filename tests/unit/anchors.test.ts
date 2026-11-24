@@ -28,4 +28,12 @@ describe('editor source anchors', () => {
     expect(offset).toBeGreaterThanOrEqual('# Title\n\n'.length)
     expect(offset).toBeLessThanOrEqual(shortened.length)
   })
+
+  it.each([
+    ['root.children.1', '# Title\n\nNext.\n\nLast.\n'],
+    ['root.children.20', '# Title\n\nLast.\n'],
+  ])('starts at the nearest surviving block for %s', (blockPath, shortened) => {
+    const offset = sourceOffsetForAnchor(shortened, { mode: 'visual', blockPath, sourceOffset: 200, inlineOffset: 0 })
+    expect(shortened.slice(offset)).toBe(blockPath === 'root.children.1' ? 'Next.\n\nLast.\n' : 'Last.\n')
+  })
 })

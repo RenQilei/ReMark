@@ -6,6 +6,7 @@ export interface EditorAnchor {
   sourceOffset: number | null
   blockPath: string | null
   inlineOffset: number | null
+  blockViewportOffset?: number | null
 }
 
 export interface DocumentSnapshot {
@@ -14,6 +15,7 @@ export interface DocumentSnapshot {
   savedMarkdown: string
   mode: EditorMode
   anchor: EditorAnchor | null
+  viewportAnchor: EditorAnchor | null
   scrollTop: number
   revision: number
 }
@@ -23,7 +25,7 @@ export interface DocumentSession {
   isDirty(): boolean
   updateVisual(markdown: string, anchor: EditorAnchor): void
   updateSource(markdown: string, anchor: EditorAnchor): void
-  switchMode(mode: EditorMode): DocumentSnapshot
+  switchMode(mode: EditorMode, viewportAnchor?: EditorAnchor | null): DocumentSnapshot
   undoDepth(): number
   redoDepth(): number
   undo(): DocumentSnapshot
@@ -32,7 +34,11 @@ export interface DocumentSession {
 }
 
 function copySnapshot(snapshot: DocumentSnapshot): DocumentSnapshot {
-  return { ...snapshot, anchor: snapshot.anchor ? { ...snapshot.anchor } : null }
+  return {
+    ...snapshot,
+    anchor: snapshot.anchor ? { ...snapshot.anchor } : null,
+    viewportAnchor: snapshot.viewportAnchor ? { ...snapshot.viewportAnchor } : null,
+  }
 }
 
 export class MarkdownDocumentSession implements DocumentSession {
@@ -41,7 +47,7 @@ export class MarkdownDocumentSession implements DocumentSession {
   private readonly redoStack: DocumentSnapshot[] = []
 
   constructor(filePath: string | null, markdown: string, mode: EditorMode, savedMarkdown = markdown) {
-    this.snapshot = { filePath, markdown, savedMarkdown, mode, anchor: null, scrollTop: 0, revision: 0 }
+    this.snapshot = { filePath, markdown, savedMarkdown, mode, anchor: null, viewportAnchor: null, scrollTop: 0, revision: 0 }
   }
 
   getSnapshot(): DocumentSnapshot {
@@ -60,7 +66,7 @@ export class MarkdownDocumentSession implements DocumentSession {
     this.update(markdown, anchor)
   }
 
-  switchMode(mode: EditorMode): DocumentSnapshot {
+  switchMode(mode: EditorMode, viewportAnchor?: EditorAnchor | null): DocumentSnapshot {
     if (mode === this.snapshot.mode) return this.getSnapshot()
     this.undoStack.push(this.getSnapshot())
     this.redoStack.length = 0
@@ -68,6 +74,7 @@ export class MarkdownDocumentSession implements DocumentSession {
       ...this.snapshot,
       mode,
       anchor: this.snapshot.anchor ? { ...this.snapshot.anchor, mode } : null,
+      viewportAnchor: viewportAnchor === undefined ? this.snapshot.viewportAnchor : viewportAnchor,
     }
     return this.getSnapshot()
   }

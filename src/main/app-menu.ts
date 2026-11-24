@@ -1,7 +1,7 @@
 import { BrowserWindow, Menu } from 'electron'
 
 function sendToFocusedWindow(channel: string): void {
-  const window = BrowserWindow.getFocusedWindow() ?? BrowserWindow.getAllWindows()[0]
+  const window = BrowserWindow.getFocusedWindow()
   window?.webContents.send(channel)
 }
 

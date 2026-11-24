@@ -35,12 +35,23 @@ interface VisualEditorProps extends EditorComponentProps {
   documentId: number
 }
 
-export const VisualEditor = forwardRef<EditorController, VisualEditorProps>(function VisualEditor({ documentId, initialMarkdown, onChange }, ref) {
+function blockElements(view: EditorView): (HTMLElement | null)[] {
+  const elements: (HTMLElement | null)[] = []
+  view.state.doc.forEach((_node, offset) => {
+    const element = view.nodeDOM(offset)
+    elements.push(element instanceof HTMLElement ? element : null)
+  })
+  return elements
+}
+
+export const VisualEditor = forwardRef<EditorController, VisualEditorProps>(function VisualEditor({ documentId, initialMarkdown, initialAnchor, initialViewportAnchor, onChange }, ref) {
   const containerRef = useRef<HTMLDivElement>(null)
   const viewRef = useRef<EditorView | null>(null)
   const crepeRef = useRef<Crepe | null>(null)
   const onChangeRef = useRef(onChange)
   const initialMarkdownRef = useRef(initialMarkdown)
+  const initialAnchorRef = useRef(initialAnchor)
+  const initialViewportAnchorRef = useRef(initialViewportAnchor)
 
   useEffect(() => { onChangeRef.current = onChange }, [onChange])
   useImperativeHandle(ref, () => ({
@@ -118,6 +129,23 @@ export const VisualEditor = forwardRef<EditorController, VisualEditorProps>(func
       view.dispatch(view.state.tr.setSelection(TextSelection.near(view.state.doc.resolve(position))).scrollIntoView())
       view.focus()
     },
+    getViewportAnchor: () => {
+      const view = viewRef.current
+      const host = containerRef.current
+      if (!view || !host) return null
+      const hostRect = host.getBoundingClientRect()
+      const elements = blockElements(view)
+      const index = elements.findIndex((element) => element && element.getBoundingClientRect().bottom > hostRect.top)
+      const element = elements[index]
+      if (index < 0 || !element) return null
+      return {
+        mode: 'visual',
+        sourceOffset: null,
+        blockPath: `root.children.${index}`,
+        inlineOffset: 0,
+        blockViewportOffset: element.getBoundingClientRect().top - hostRect.top,
+      }
+    },
     focus: () => viewRef.current?.focus(),
   }), [documentId])
 
@@ -136,12 +164,39 @@ export const VisualEditor = forwardRef<EditorController, VisualEditorProps>(func
         onChangeRef.current(restored, anchorAtSourceOffset(restored, Math.min(restored.length, offset), 'visual'))
       })
     })
+    crepe.on((listener) => {
+      listener.updated(() => {
+        if (disposed || !viewRef.current) return
+        const markdown = crepe.getMarkdown()
+        const offset = viewRef.current.state.doc.textBetween(0, viewRef.current.state.selection.from, '\n', '\n').length
+        onChangeRef.current(restoreAssetUrls(markdown, documentId), anchorAtSourceOffset(restoreAssetUrls(markdown, documentId), Math.min(markdown.length, offset), 'visual'))
+      })
+    })
     crepe.editor.use(diagram).use(strictMermaidPlugin).use(mermaidNodeViewPlugin).use(sanitizedHtmlNodeViewPlugin)
     void crepe.create().then(() => {
       if (disposed) return
       const view = crepe.editor.action((ctx) => ctx.get(editorViewCtx))
       viewRef.current = view
       view.dom.setAttribute('aria-label', '所见即所得编辑器')
+      const selectionAnchor = initialAnchorRef.current
+      if (selectionAnchor?.blockPath) {
+        const match = /^root\.children\.(\d+)$/.exec(selectionAnchor.blockPath)
+        const index = match ? Number(match[1]) : -1
+        if (index >= 0 && index < view.state.doc.childCount) {
+          let position = 1
+          for (let childIndex = 0; childIndex < index; childIndex += 1) position += view.state.doc.child(childIndex).nodeSize
+          position = Math.min(view.state.doc.content.size, position + (selectionAnchor.inlineOffset ?? 0))
+          view.dispatch(view.state.tr.setSelection(TextSelection.near(view.state.doc.resolve(position))))
+        }
+      }
+      const viewportAnchor = initialViewportAnchorRef.current
+      if (viewportAnchor?.blockViewportOffset !== null && viewportAnchor?.blockViewportOffset !== undefined) {
+        const elements = blockElements(view)
+        const match = /^root\.children\.(\d+)$/.exec(viewportAnchor.blockPath ?? '')
+        const index = match ? Number(match[1]) : -1
+        const target = (index >= 0 ? elements[Math.min(index, elements.length - 1)] : elements.at(-1)) ?? null
+        if (target && containerRef.current) containerRef.current.scrollTop = target.getBoundingClientRect().top - containerRef.current.getBoundingClientRect().top - viewportAnchor.blockViewportOffset
+      }
       containerRef.current?.setAttribute('data-ready', 'true')
     })
     return () => {

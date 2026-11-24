@@ -12,7 +12,7 @@
   <g filter="url(#shadow)">
     <path d="M292 178h310l130 132v536H292z" fill="#fbfbf7"/>
     <path d="M602 178v132h130" fill="#dce7df"/>
-    <text x="298" y="700" fill="#365e4b" font-family="Arial Black, Arial, sans-serif" font-size="190" font-weight="900" letter-spacing="-8"><tspan>R</tspan><tspan dx="32">e</tspan></text>
+    <text x="298" y="700" fill="#365e4b" font-family="Arial Black, Arial, sans-serif" font-size="190" font-weight="900" letter-spacing="-8"><tspan>R</tspan><tspan dx="0.5">e</tspan></text>
     <path id="solid-down-arrow" d="M620 568H662V646H707L642 698L577 646H620Z" fill="#365e4b" stroke="#365e4b" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
   <title>Re with a solid down arrow</title>

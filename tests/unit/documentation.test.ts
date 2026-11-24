@@ -53,7 +53,7 @@ describe('brand source', () => {
   it('uses Re with a solid vector arrow and removes emoji and previous R implementations', () => {
     const icon = read('build/icon.svg')
     expect(icon).toContain('<title>Re with a solid down arrow</title>')
-    expect(icon).toContain('<tspan>R</tspan><tspan dx="32">e</tspan>')
+    expect(icon).toContain('<tspan>R</tspan><tspan dx="0.5">e</tspan>')
     expect(icon).toContain('id="solid-down-arrow"')
     expect(icon).toContain('M620 568H662V646H707L642 698L577 646H620Z')
     expect(icon).toContain('Arial Black')

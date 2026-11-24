@@ -12,11 +12,13 @@ export interface EditorController {
   replaceCurrent(query: string, replacement: string): boolean
   replaceAll(query: string, replacement: string): number
   goToSourceOffset(offset: number): void
+  getViewportAnchor(): EditorAnchor | null
   focus(): void
 }
 
 export interface EditorComponentProps {
   initialMarkdown: string
   initialAnchor: EditorAnchor | null
+  initialViewportAnchor: EditorAnchor | null
   onChange(markdown: string, anchor: EditorAnchor): void
 }

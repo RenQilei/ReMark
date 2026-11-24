@@ -35,11 +35,13 @@
 .milkdown-host .ProseMirror p { margin: 0 0 1.1em; color: var(--text); }
 .milkdown-host .ProseMirror blockquote { margin: 1.5em 0; padding-left: 18px; border-left: 3px solid var(--muted); color: var(--quote); }
 .milkdown-host .ProseMirror a { color: var(--accent); text-decoration: none; }
-.milkdown-host .ProseMirror code { padding: .15em .35em; border-radius: 4px; background: var(--code-bg); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .88em; }
+.milkdown-host .ProseMirror code { padding: .15em .35em; border-radius: 4px; background: var(--code-bg); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .88em; overflow-wrap: anywhere; word-break: break-word; }
 .milkdown-host .ProseMirror pre { padding: 0; border: 1px solid var(--line); border-radius: 8px; background: var(--code-bg); }
-.milkdown-host .ProseMirror pre code { padding: 0; background: transparent; }
-.milkdown-host .ProseMirror table { width: 100%; border-collapse: collapse; margin: 1.2em 0; font-size: .9em; }
-.milkdown-host .ProseMirror th, .milkdown-host .ProseMirror td { padding: 8px 10px; border: 1px solid var(--line); }
+.milkdown-host .ProseMirror pre code { padding: 0; background: transparent; overflow-wrap: anywhere; word-break: break-word; }
+.milkdown-host .ProseMirror table { width: 100%; border-collapse: collapse; margin: 1.2em 0; font-size: .9em; table-layout: auto !important; }
+.milkdown-host .ProseMirror .tableWrapper { max-width: 100%; overflow-x: auto; }
+.milkdown-host .ProseMirror th, .milkdown-host .ProseMirror td { padding: 8px 10px; border: 1px solid var(--line); overflow-wrap: anywhere; word-break: break-word; }
+.milkdown-host .ProseMirror th:not([data-colwidth]), .milkdown-host .ProseMirror td:not([data-colwidth]) { min-width: 0; }
 .milkdown-host .ProseMirror th { background: var(--code-bg); }
 .milkdown-host .ProseMirror img { max-width: 100%; }
 .milkdown-host .ProseMirror .cm-editor { height: auto; }

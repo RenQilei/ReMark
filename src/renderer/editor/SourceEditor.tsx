@@ -48,12 +48,13 @@ function performSourceAction(view: EditorView, action: EditorAction): void {
   view.focus()
 }
 
-export const SourceEditor = forwardRef<EditorController, EditorComponentProps>(function SourceEditor({ initialMarkdown, initialAnchor, onChange }, ref) {
+export const SourceEditor = forwardRef<EditorController, EditorComponentProps>(function SourceEditor({ initialMarkdown, initialAnchor, initialViewportAnchor, onChange }, ref) {
   const containerRef = useRef<HTMLDivElement>(null)
   const viewRef = useRef<EditorView | null>(null)
   const onChangeRef = useRef(onChange)
   const initialMarkdownRef = useRef(initialMarkdown)
   const initialAnchorRef = useRef(initialAnchor)
+  const initialViewportAnchorRef = useRef(initialViewportAnchor)
 
   useEffect(() => { onChangeRef.current = onChange }, [onChange])
   useImperativeHandle(ref, () => ({
@@ -111,12 +112,24 @@ export const SourceEditor = forwardRef<EditorController, EditorComponentProps>(f
       view.dispatch(view.state.update({ selection: { anchor }, scrollIntoView: true }))
       view.focus()
     },
+    getViewportAnchor: () => {
+      const view = viewRef.current
+      if (!view) return null
+      const markdown = view.state.doc.toString()
+      const scrollerRect = view.scrollDOM.getBoundingClientRect()
+      const offset = view.posAtCoords({ x: view.contentDOM.getBoundingClientRect().left + 5, y: scrollerRect.top + 1 })
+      if (offset === null) return null
+      const anchor = anchorAtSourceOffset(markdown, offset, 'source')
+      const blockStart = sourceOffsetForAnchor(markdown, { ...anchor, inlineOffset: 0 })
+      return { ...anchor, sourceOffset: blockStart, inlineOffset: 0, blockViewportOffset: view.documentTop + view.lineBlockAt(blockStart).top - scrollerRect.top }
+    },
     focus: () => viewRef.current?.focus(),
   }), [])
 
   useEffect(() => {
     if (!containerRef.current) return
     const anchor = initialAnchorRef.current
+    const viewportAnchor = initialViewportAnchorRef.current
     const selection = anchor ? sourceOffsetForAnchor(initialMarkdownRef.current, anchor) : initialMarkdownRef.current.length
     const view = new EditorView({
       parent: containerRef.current,
@@ -128,7 +141,7 @@ export const SourceEditor = forwardRef<EditorController, EditorComponentProps>(f
           markdownLanguage({ codeLanguages: languages }),
           EditorView.lineWrapping,
           EditorView.updateListener.of((update) => {
-            if (!update.docChanged) return
+            if (!update.docChanged && !update.selectionSet) return
             const markdown = update.state.doc.toString()
             onChangeRef.current(markdown, anchorAtSourceOffset(markdown, update.state.selection.main.head, 'source'))
           }),
@@ -140,6 +153,19 @@ export const SourceEditor = forwardRef<EditorController, EditorComponentProps>(f
     view.contentDOM.setAttribute('aria-multiline', 'true')
     view.contentDOM.setAttribute('spellcheck', 'false')
     viewRef.current = view
+    if (viewportAnchor?.blockViewportOffset !== null && viewportAnchor?.blockViewportOffset !== undefined) {
+      const blockStart = sourceOffsetForAnchor(initialMarkdownRef.current, viewportAnchor)
+      view.dispatch({ effects: EditorView.scrollIntoView(blockStart, { y: 'start', yMargin: viewportAnchor.blockViewportOffset }) })
+      requestAnimationFrame(() => view.requestMeasure({
+        read: (current) => {
+          if (!current.coordsAtPos(blockStart)) return null
+          return current.documentTop + current.lineBlockAt(blockStart).top - current.scrollDOM.getBoundingClientRect().top - viewportAnchor.blockViewportOffset!
+        },
+        write: (difference, current) => {
+          if (difference !== null) current.scrollDOM.scrollTop += difference
+        },
+      }))
+    }
     return () => {
       view.destroy()
       viewRef.current = null

@@ -47,7 +47,7 @@ export function createDocumentWindow(filePath: string | null = null, isNew = fal
     show: false,
     title: filePath ? path.basename(filePath) : '未命名.md',
     backgroundColor: nativeTheme.shouldUseDarkColors ? '#1f2023' : '#f5f5f2',
-    titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : 'default',
+    titleBarStyle: 'default',
     trafficLightPosition: { x: 15, y: 18 },
     tabbingIdentifier: 'remark-documents',
     webPreferences: {

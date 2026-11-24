@@ -33,6 +33,7 @@ export function App() {
   const [source, setSource] = useState('')
   const [savedSource, setSavedSource] = useState('')
   const [anchor, setAnchor] = useState<EditorAnchor | null>(null)
+  const [viewportAnchor, setViewportAnchor] = useState<EditorAnchor | null>(null)
   const [epoch, setEpoch] = useState(0)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [findOpen, setFindOpen] = useState(false)
@@ -157,6 +158,7 @@ export function App() {
     })
   }
   const changeMode = (nextMode: EditorMode) => {
+    const readingAnchor = editorRef.current?.getViewportAnchor() ?? null
     const latestMarkdown = editorRef.current?.getMarkdown()
     if (latestMarkdown !== null && latestMarkdown !== undefined && latestMarkdown !== source) {
       const latestAnchor = anchor ?? { mode, sourceOffset: null, blockPath: null, inlineOffset: null }
@@ -164,8 +166,9 @@ export function App() {
       else sessionRef.current?.updateSource(latestMarkdown, latestAnchor)
       setSource(latestMarkdown)
     }
-    const snapshot = sessionRef.current?.switchMode(nextMode)
+    const snapshot = sessionRef.current?.switchMode(nextMode, readingAnchor)
     setAnchor(snapshot?.anchor ?? null)
+    setViewportAnchor(snapshot?.viewportAnchor ?? null)
     setMode(nextMode)
   }
   const handleEditorChange = useCallback((markdown: string, nextAnchor: EditorAnchor) => {
@@ -178,6 +181,7 @@ export function App() {
     setSource(snapshot.markdown)
     setMode(snapshot.mode)
     setAnchor(snapshot.anchor)
+    setViewportAnchor(snapshot.viewportAnchor)
     setEpoch((value) => value + 1)
   }, [])
   const handleEditorKeyboard = useCallback((event: React.KeyboardEvent) => {
@@ -260,7 +264,7 @@ export function App() {
       </header>
 
       <main className={`editor-surface ${mode === 'source' ? 'source-mode' : ''}`}>
-        <EditorHost ref={editorRef} documentId={bootstrap?.windowId ?? -1} mode={mode} markdown={source} anchor={anchor} epoch={epoch} onChange={handleEditorChange} />
+        <EditorHost ref={editorRef} documentId={bootstrap?.windowId ?? -1} mode={mode} markdown={source} anchor={anchor} viewportAnchor={viewportAnchor} epoch={epoch} onChange={handleEditorChange} />
       </main>
 
       {findOpen && <FindReplace onFind={(query) => editorRef.current?.findNext(query) ?? false} onReplace={(query, replacement) => editorRef.current?.replaceCurrent(query, replacement) ?? false} onReplaceAll={(query, replacement) => editorRef.current?.replaceAll(query, replacement) ?? 0} onClose={() => setFindOpen(false)} />}

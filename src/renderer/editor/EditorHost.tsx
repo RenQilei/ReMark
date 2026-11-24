@@ -9,13 +9,14 @@ interface EditorHostProps {
   mode: EditorMode
   markdown: string
   anchor: EditorAnchor | null
+  viewportAnchor: EditorAnchor | null
   epoch: number
   onChange(markdown: string, anchor: EditorAnchor): void
 }
 
-export const EditorHost = forwardRef<EditorController, EditorHostProps>(function EditorHost({ documentId, mode, markdown, anchor, epoch, onChange }, ref) {
+export const EditorHost = forwardRef<EditorController, EditorHostProps>(function EditorHost({ documentId, mode, markdown, anchor, viewportAnchor, epoch, onChange }, ref) {
   if (mode === 'visual') {
-    return <VisualEditor key={`visual-${epoch}`} ref={ref} documentId={documentId} initialMarkdown={markdown} initialAnchor={anchor} onChange={onChange} />
+    return <VisualEditor key={`visual-${epoch}`} ref={ref} documentId={documentId} initialMarkdown={markdown} initialAnchor={anchor} initialViewportAnchor={viewportAnchor} onChange={onChange} />
   }
-  return <SourceEditor key={`source-${epoch}`} ref={ref} initialMarkdown={markdown} initialAnchor={anchor} onChange={onChange} />
+  return <SourceEditor key={`source-${epoch}`} ref={ref} initialMarkdown={markdown} initialAnchor={anchor} initialViewportAnchor={viewportAnchor} onChange={onChange} />
 })

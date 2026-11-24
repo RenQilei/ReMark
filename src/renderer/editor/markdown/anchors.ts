@@ -37,6 +37,7 @@ export function anchorAtSourceOffset(markdown: string, offset: number, mode: Edi
     sourceOffset: clamped,
     blockPath: selected ? `root.children.${selectedIndex}` : null,
     inlineOffset: selected ? Math.max(0, clamped - start(selected)) : null,
+    blockViewportOffset: null,
   }
 }
 
@@ -44,8 +45,8 @@ export function sourceOffsetForAnchor(markdown: string, anchor: EditorAnchor): n
   const blocks = children(markdown)
   const match = /^root\.children\.(\d+)$/.exec(anchor.blockPath ?? '')
   const index = match ? Number(match[1]) : -1
-  if (index >= 0 && blocks[index]) {
-    const node = blocks[index]
+  if (index >= 0 && blocks.length > 0) {
+    const node = blocks[Math.min(index, blocks.length - 1)]
     return Math.min(end(node), start(node) + Math.max(0, anchor.inlineOffset ?? 0))
   }
   return Math.max(0, Math.min(markdown.length, anchor.sourceOffset ?? markdown.length))
