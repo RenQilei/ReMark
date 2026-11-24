@@ -1,0 +1,92 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      prerelease:
+        description: 'Publish as an unsigned prerelease'
+        type: boolean
+        default: true
+      tag:
+        description: 'Release tag (for example v0.1.0-alpha.0)'
+        required: true
+        type: string
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  macos:
+    runs-on: macos-latest
+    env:
+      CSC_LINK: ${{ secrets.CSC_LINK }}
+      CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+      APPLE_API_KEY: ${{ secrets.APPLE_API_KEY }}
+      APPLE_API_KEY_ID: ${{ secrets.APPLE_API_KEY_ID }}
+      APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - name: Determine release type and tag
+        id: release
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "tag=${{ inputs.tag }}" >> "$GITHUB_OUTPUT"
+            echo "prerelease=${{ inputs.prerelease }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+            if [[ "${GITHUB_REF_NAME}" == *-* ]]; then
+              echo "prerelease=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "prerelease=false" >> "$GITHUB_OUTPUT"
+            fi
+          fi
+      - name: Require signing for stable releases
+        if: steps.release.outputs.prerelease != 'true'
+        run: |
+          test -n "$CSC_LINK" || { echo 'Stable releases require CSC_LINK.'; exit 1; }
+          test -n "$APPLE_API_KEY" || { echo 'Stable releases require notarization secrets.'; exit 1; }
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test
+      - run: npm run test:e2e
+      - name: Build unsigned prerelease packages
+        if: steps.release.outputs.prerelease == 'true'
+        run: |
+          npm run dist:mac:unsigned
+          npm run dist:mac:x64
+      - name: Build signed and notarized stable packages
+        if: steps.release.outputs.prerelease != 'true'
+        env:
+          REMARK_NOTARIZE: '1'
+        run: |
+          node scripts/build-dmg.mjs
+          node scripts/build-dmg.mjs --x64
+      - run: hdiutil verify release/Remark-*-arm64.dmg
+      - run: hdiutil verify release/Remark-*-x64.dmg
+      - run: npm run smoke:packaged
+      - run: npm run checksums
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [[ "${{ steps.release.outputs.prerelease }}" == "true" ]]; then
+            gh release create "${{ steps.release.outputs.tag }}" release/*.dmg release/SHA256SUMS.txt --prerelease --title "Remark ${{ steps.release.outputs.tag }}" --notes "Unsigned prerelease. Verify SHA-256 before installation."
+          else
+            gh release create "${{ steps.release.outputs.tag }}" release/*.dmg release/SHA256SUMS.txt --title "Remark ${{ steps.release.outputs.tag }}" --notes "Signed and notarized release."
+          fi
+      - name: Publish Gitee Release when explicitly enabled
+        if: vars.GITEE_PUBLISH == 'true'
+        env:
+          GITEE_OWNER: ${{ vars.GITEE_OWNER }}
+          GITEE_REPO: ${{ vars.GITEE_REPO }}
+          GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
+          TAG: ${{ steps.release.outputs.tag }}
+          PRERELEASE: ${{ steps.release.outputs.prerelease }}
+        run: node scripts/publish-gitee-release.mjs --apply

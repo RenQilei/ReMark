@@ -1,0 +1,41 @@
+appId: com.remark.editor
+productName: Remark
+directories:
+  output: release
+files:
+  - out/**
+  - package.json
+  - LICENSE
+  - NOTICE.md
+  - build/icon.icns
+asar: true
+mac:
+  category: public.app-category.productivity
+  icon: build/icon.icns
+  minimumSystemVersion: '13.0'
+  target:
+    - dmg
+  extendInfo:
+    CFBundleDocumentTypes:
+      - CFBundleTypeName: Markdown Document
+        CFBundleTypeRole: Editor
+        LSHandlerRank: Owner
+        LSItemContentTypes:
+          - net.daringfireball.markdown
+        CFBundleTypeExtensions:
+          - md
+          - markdown
+          - mdown
+          - mkd
+    NSHumanReadableCopyright: Remark Contributors. GPL-3.0-only.
+dmg:
+  title: Remark ${version}
+  artifactName: ${productName}-${version}-${arch}.dmg
+  contents:
+    - x: 140
+      y: 180
+    - x: 400
+      y: 180
+      type: link
+      path: /Applications
+afterSign: scripts/notarize.mjs

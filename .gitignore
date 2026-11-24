@@ -1,0 +1,43 @@
+# Dependencies and build output
+node_modules/
+out/
+dist/
+release/
+coverage/
+.vite/
+.cache/
+.eslintcache
+*.tsbuildinfo
+
+# Test output
+playwright-report/
+test-results/
+*.log
+
+# Generated icon intermediates
+build/icon.iconset/
+build/icon-1024.png
+build/icon-preview*.png
+build/candidate-*
+
+# Local workspaces
+.superpowers/
+.worktrees/
+tmp/
+
+# Local environment files and signing secrets
+.env
+.env.*
+!.env.example
+*.p8
+*.p12
+*.pem
+*.key
+*.cer
+*.crt
+*.mobileprovision
+*.provisionprofile
+
+# Operating system metadata
+.DS_Store
+Thumbs.db

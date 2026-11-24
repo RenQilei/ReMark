@@ -1,0 +1,34 @@
+.app-shell {
+  --chrome: #f3f3f0;
+  --paper: #ffffff;
+  --ink: #292a28;
+  --text: #464743;
+  --muted: #858680;
+  --line: #dedfd9;
+  --hover: rgba(0, 0, 0, 0.055);
+  --accent: #356e52;
+  --control: #ffffff;
+  --code-bg: #f7f8f5;
+  --quote: #777870;
+  --shadow: rgba(30, 30, 25, 0.16);
+}
+.app-shell[data-appearance="dark"] {
+  --chrome: #26272a;
+  --paper: #1f2023;
+  --ink: #e8e8e3;
+  --text: #c8c9c3;
+  --muted: #999b96;
+  --line: #3a3b3e;
+  --hover: rgba(255, 255, 255, 0.07);
+  --accent: #82b99a;
+  --control: #444548;
+  --code-bg: #26272a;
+  --quote: #a4a69f;
+  --shadow: rgba(0, 0, 0, 0.45);
+}
+.app-shell[data-theme="github"][data-appearance="light"] { --chrome:#f6f8fa; --paper:#ffffff; --ink:#1f2328; --text:#353b42; --muted:#59636e; --line:#d1d9e0; --accent:#0969da; --code-bg:#f6f8fa; --quote:#59636e; }
+.app-shell[data-theme="github"][data-appearance="dark"] { --chrome:#161b22; --paper:#0d1117; --ink:#f0f6fc; --text:#c9d1d9; --muted:#9198a1; --line:#3d444d; --accent:#4493f8; --control:#21262d; --code-bg:#161b22; --quote:#9198a1; }
+.app-shell[data-theme="solarized"][data-appearance="light"] { --chrome:#eee8d5; --paper:#fdf6e3; --ink:#073642; --text:#586e75; --muted:#839496; --line:#ded6bc; --accent:#268bd2; --control:#fffaf0; --code-bg:#eee8d5; --quote:#657b83; --hover:rgba(88,110,117,.09); }
+.app-shell[data-theme="solarized"][data-appearance="dark"] { --chrome:#073642; --paper:#002b36; --ink:#eee8d5; --text:#93a1a1; --muted:#839496; --line:#194753; --accent:#2aa198; --control:#0f4552; --code-bg:#073642; --quote:#839496; --hover:rgba(147,161,161,.09); }
+.app-shell[data-theme="nord"][data-appearance="light"] { --chrome:#e5e9f0; --paper:#f8fafc; --ink:#2e3440; --text:#3b4252; --muted:#68758a; --line:#d1d8e3; --accent:#5e81ac; --control:#ffffff; --code-bg:#eceff4; --quote:#4c566a; }
+.app-shell[data-theme="nord"][data-appearance="dark"] { --chrome:#3b4252; --paper:#2e3440; --ink:#eceff4; --text:#d8dee9; --muted:#a2adbf; --line:#4c566a; --accent:#88c0d0; --control:#434c5e; --code-bg:#3b4252; --quote:#b1bacb; --hover:rgba(216,222,233,.08); }

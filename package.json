@@ -1,0 +1,72 @@
+{
+  "name": "remark-editor",
+  "version": "0.1.0-alpha.0",
+  "private": true,
+  "description": "A document-first Markdown reader and editor for macOS",
+  "main": "out/main/index.js",
+  "license": "GPL-3.0-only",
+  "type": "module",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "preview": "electron-vite preview",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:e2e": "npm run build && playwright test",
+    "pack": "electron-builder --dir",
+    "dist:mac": "npm run build && node scripts/build-dmg.mjs",
+    "dist:mac:unsigned": "npm run build && node scripts/build-dmg.mjs --unsigned",
+    "dist:mac:x64": "npm run build && node scripts/build-dmg.mjs --unsigned --x64",
+    "smoke:packaged": "node scripts/smoke-packaged.mjs",
+    "checksums": "node scripts/checksums.mjs"
+  },
+  "dependencies": {
+    "@codemirror/lang-markdown": "^6.5.2",
+    "@codemirror/language-data": "^6.5.2",
+    "@codemirror/search": "^6.7.2",
+    "@milkdown/crepe": "^7.23.0",
+    "@milkdown/kit": "^7.23.0",
+    "@milkdown/plugin-diagram": "^7.7.0",
+    "codemirror": "^6.0.2",
+    "dompurify": "^3.5.0",
+    "lucide-react": "^1.78.0",
+    "mdast-util-to-string": "^4.0.0",
+    "mermaid": "^12.3.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "remark-gfm": "^4.0.1",
+    "remark-math": "^6.0.0",
+    "remark-parse": "^11.0.0",
+    "unified": "^11.0.5"
+  },
+  "devDependencies": {
+    "@electron/notarize": "^3.1.2",
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.65.1",
+    "@types/jsdom": "^30.0.0",
+    "@types/mdast": "^4.0.4",
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.3.0",
+    "electron": "^45.4.1",
+    "electron-builder": "^26.18.0",
+    "electron-vite": "^6.0.0",
+    "eslint": "^10.15.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.8",
+    "jsdom": "^31.0.1",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.74.0",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.1"
+  },
+  "overrides": {
+    "katex": "0.19.1"
+  },
+  "author": {
+    "name": "RenQilei",
+    "email": "renqilei@gmail.com"
+  }
+}

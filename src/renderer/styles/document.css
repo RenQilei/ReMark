@@ -1,0 +1,17 @@
+.document-page { width: min(var(--document-width), calc(100% - 80px)); margin: 0 auto; padding: 62px 0 90px; font-family: var(--document-font-family); font-size: var(--document-font-size); line-height: var(--document-line-height); }
+.document-eyebrow { margin-bottom: 16px; color: var(--muted); font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; font-size: 10px; font-weight: 550; letter-spacing: 1.7px; }
+.document-page h1 { margin: 0 0 24px; font-size: 2.45em; line-height: 1.2; letter-spacing: -0.045em; font-weight: 700; }
+.document-page h2 { margin: 1.8em 0 0.65em; font-size: 1.45em; line-height: 1.35; letter-spacing: -0.025em; font-weight: 650; }
+.document-page p { margin: 0 0 1.25em; color: var(--text); }
+.document-page blockquote { margin: 1.65em 0; padding: 4px 0 4px 19px; border-left: 3px solid var(--muted); color: var(--quote); }
+.document-page blockquote p { margin: 0; color: inherit; }
+.code-block { overflow: hidden; margin: 20px 0 28px; border: 1px solid var(--line); border-radius: 9px; background: var(--code-bg); }
+.code-heading { display: flex; align-items: center; justify-content: space-between; height: 31px; padding: 0 12px; border-bottom: 1px solid var(--line); color: var(--muted); font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; font-size: 10px; }
+.code-heading button { padding: 2px 4px; border: 0; color: inherit; background: transparent; font-size: 10px; }
+.code-block pre { margin: 0; padding: 16px 18px 18px; overflow-x: auto; font: 12px/1.75 ui-monospace, SFMono-Regular, Menlo, Monaco, monospace; }
+.code-keyword { color: #b579d6; }
+.code-function { color: #58a6d6; }
+.code-string { color: #63a875; }
+.app-shell[data-appearance="light"] .code-keyword { color: #8957a5; }
+.app-shell[data-appearance="light"] .code-function { color: #276f96; }
+.app-shell[data-appearance="light"] .code-string { color: #38734b; }

@@ -1,0 +1,22 @@
+name: Sync Gitee
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm ci
+      - name: Verify before non-forced synchronization
+        env:
+          GITEE_REMOTE: ${{ vars.GITEE_REMOTE }}
+        run: |
+          test -n "$GITEE_REMOTE" || { echo 'Set GITEE_REMOTE before running this workflow.'; exit 1; }
+          node scripts/sync-gitee.mjs --apply
