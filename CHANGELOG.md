@@ -8,6 +8,7 @@ All notable changes to Remark are documented here. Versions follow [Semantic Ver
 
 - Kept document status, find, outline, mode switching, and settings accessible at 1024px and narrower window widths.
 - Added real Electron coverage for the responsive toolbar and primary editing controls.
+- Disabled implicit electron-builder publishing so DMG builds only publish through the explicit release workflow and do not require an extra token.
 
 ## [0.1.0-alpha.0] - 2026-11-24
 

@@ -4,7 +4,7 @@ import path from 'node:path'
 const args = process.argv.slice(2)
 const unsigned = args.includes('--unsigned')
 const architecture = args.includes('--x64') ? 'x64' : 'arm64'
-const builderArgs = ['--mac', 'dmg', `--${architecture}`]
+const builderArgs = ['--mac', 'dmg', `--${architecture}`, '--publish', 'never']
 if (unsigned) builderArgs.push('-c.mac.identity=null', '-c.dmg.artifactName=Remark-${version}-unsigned-${arch}.dmg')
 const result = spawnSync(path.resolve('node_modules/.bin/electron-builder'), builderArgs, {
   cwd: process.cwd(),

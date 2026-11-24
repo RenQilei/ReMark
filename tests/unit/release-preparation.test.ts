@@ -29,6 +29,10 @@ describe('alpha release preparation', () => {
     expect(ignore).toContain('!.env.example')
   })
 
+  it('keeps artifact publishing under explicit workflow control', () => {
+    expect(read('scripts/build-dmg.mjs')).toContain("'--publish', 'never'")
+  })
+
   it('configures remotes only in dry-run mode by default', () => {
     const result = spawnSync(process.execPath, ['scripts/setup-remotes.mjs'], { encoding: 'utf8' })
     expect(result.status).toBe(0)
