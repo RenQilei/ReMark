@@ -35,18 +35,18 @@ export function EditorToolbar({ onAction, onFind, onOutline }: EditorToolbarProp
       </select>
       <span className="toolbar-separator" />
       {tools.map(({ label, icon: Icon, action }) => (
-        <button type="button" className="icon-button" aria-label={label} title={label} key={label} onClick={() => onAction(action)}>
+        <button type="button" className="icon-button" aria-label={label} title={label} key={label} data-action={action} onClick={() => onAction(action)}>
           <Icon size={16} strokeWidth={1.8} />
         </button>
       ))}
       <span className="toolbar-separator" />
       {blocks.map(({ label, icon: Icon, action }) => (
-        <button type="button" className="icon-button" aria-label={label} title={label} key={label} onClick={() => onAction(action)}>
+        <button type="button" className="icon-button" aria-label={label} title={label} key={label} data-action={action} onClick={() => onAction(action)}>
           <Icon size={16} strokeWidth={1.8} />
         </button>
       ))}
       <span className="toolbar-separator" />
-      <button type="button" className="icon-button" aria-label="插入" title="插入" onClick={() => onAction('table')}><Plus size={17} /></button>
+      <button type="button" className="icon-button" aria-label="插入" title="插入" data-action="table" onClick={() => onAction('table')}><Plus size={17} /></button>
       <div className="toolbar-spacer" />
       <button type="button" className="icon-button" aria-label="查找" title="查找" onClick={onFind}><Search size={16} /></button>
       <button type="button" className="icon-button" aria-label="大纲" title="大纲" onClick={onOutline}><ListTree size={16} /></button>

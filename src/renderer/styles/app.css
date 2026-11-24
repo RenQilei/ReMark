@@ -43,8 +43,24 @@ button:focus-visible, select:focus-visible, textarea:focus-visible, input:focus-
 .secondary-button { border: 1px solid var(--line); background: var(--control); }
 .empty-hint { margin-top: 18px; color: var(--muted); font-size: 10px; }
 @media (max-width: 1050px) {
-  .document-identity { display: none; }
-  .format-tools .toolbar-separator:nth-of-type(3), .format-tools > .icon-button:nth-last-child(-n+4) { display: none; }
+  .format-tools .toolbar-separator,
+  .format-tools [data-action="table"],
+  .format-tools [data-action="image"],
+  .format-tools [data-action="math"] { display: none; }
+}
+@media (max-width: 850px) {
+  .document-identity,
+  .format-tools [data-action="orderedList"],
+  .format-tools [data-action="blockquote"],
+  .format-tools [data-action="link"] { display: none; }
+}
+@media (max-width: 760px) {
+  .paragraph-style,
+  .format-tools [data-action="bulletList"],
+  .format-tools [data-action="orderedList"],
+  .format-tools [data-action="blockquote"],
+  .format-tools [data-action="link"],
+  .format-tools [data-action="inlineCode"] { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
