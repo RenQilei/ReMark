@@ -4,6 +4,7 @@ import path from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { installApplicationMenu } from './app-menu'
 import { installWindowZoom, setWindowZoom, stepWindowZoom } from './window-zoom'
+import { resolveUserDataPath } from './user-data'
 import type { ZoomDirection } from '../shared/zoom'
 import { SettingsService } from './settings-service'
 import { DocumentService } from './document-service'
@@ -12,8 +13,9 @@ import { RecoveryService } from './recovery-service'
 import type { OpenedFile } from '../shared/files'
 import type { EditorMode } from '../shared/documents'
 
+app.setName('ReMark')
 protocol.registerSchemesAsPrivileged([{ scheme: 'remark-asset', privileges: { standard: true, secure: true, supportFetchAPI: true, stream: true } }])
-if (process.env.REMARK_USER_DATA_DIR) app.setPath('userData', path.resolve(process.env.REMARK_USER_DATA_DIR))
+app.setPath('userData', resolveUserDataPath(app.getPath('appData'), process.env.REMARK_USER_DATA_DIR))
 
 const currentDir = path.dirname(fileURLToPath(import.meta.url))
 const settings = new SettingsService(path.join(app.getPath('userData'), 'settings.json'))

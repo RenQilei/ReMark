@@ -1,8 +1,8 @@
-# Contributing to Remark
+# Contributing to ReMark
 
 **English** · [简体中文](CONTRIBUTING.zh-CN.md)
 
-Thank you for helping improve Remark. Contributions should preserve its document-first philosophy and its safeguards against data loss.
+Thank you for helping improve ReMark. Contributions should preserve its document-first philosophy and its safeguards against data loss.
 
 ## Principles
 

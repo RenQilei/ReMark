@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to Remark are documented here. Versions follow [Semantic Versioning](https://semver.org/).
+All notable changes to ReMark are documented here. Versions follow [Semantic Versioning](https://semver.org/).
 
 ## [0.1.0-alpha.3] - 2026-11-25
 
@@ -13,7 +13,7 @@ All notable changes to Remark are documented here. Versions follow [Semantic Ver
 - Rendered Chinese and multiline Mermaid labels as native SVG text while preserving strict sanitization.
 - Prevented editor normalization and selection updates from marking untouched documents as modified.
 - Restored the clean native state after undoing back to the initial or saved version, while preserving unsaved-close protection.
-- Quit after the last clean document window closes instead of leaving Remark running in the Dock.
+- Quit after the last clean document window closes instead of leaving ReMark running in the Dock.
 
 ### Changed
 

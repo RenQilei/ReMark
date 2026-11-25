@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="build/icon.svg" alt="Remark logo with Re and a solid down arrow" width="128">
+  <img src="build/icon.svg" alt="ReMark logo with Re and a solid down arrow" width="128">
 </p>
 
-<h1 align="center">Remark</h1>
+<h1 align="center">ReMark</h1>
 
 <p align="center">
   <strong>A document-first Markdown reader and editor for macOS</strong><br>
@@ -13,11 +13,11 @@
   <strong>English</strong> · <a href="Readme.zh-CN.md">简体中文</a>
 </p>
 
-Remark opens local Markdown files directly—no vaults, workspace imports, accounts, or file manager. Its default view is a live preview editor, with a full source editor one click away.
+ReMark opens local Markdown files directly—no vaults, workspace imports, accounts, or file manager. Its default view is a live preview editor, with a full source editor one click away.
 
 | Native light | Native dark |
 | --- | --- |
-| ![Remark in Native light](docs/assets/remark-light.png) | ![Remark in Native dark](docs/assets/remark-dark.png) |
+| ![ReMark in Native light](docs/assets/remark-light.png) | ![ReMark in Native dark](docs/assets/remark-dark.png) |
 
 ## Download
 
@@ -27,12 +27,12 @@ Choose the installer that matches your Mac. To check, choose **Apple menu  > Abo
 
 | Your Mac | Installer |
 | --- | --- |
-| Apple Silicon (M1 or later) | [Download Remark for Apple Silicon](https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.3/Remark-0.1.0-alpha.3-unsigned-arm64.dmg) |
-| Intel | [Download Remark for Intel](https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.3/Remark-0.1.0-alpha.3-unsigned-x64.dmg) |
+| Apple Silicon (M1 or later) | [Download ReMark for Apple Silicon](https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.3/ReMark-0.1.0-alpha.3-unsigned-arm64.dmg) |
+| Intel | [Download ReMark for Intel](https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.3/ReMark-0.1.0-alpha.3-unsigned-x64.dmg) |
 
 1. Open the DMG file from the matching download link above.
-2. Drag **Remark** into **Applications**.
-3. Launch Remark and open a `.md`, `.markdown`, `.mdown`, or `.mkd` file.
+2. Drag **ReMark** into **Applications**.
+3. Launch ReMark and open a `.md`, `.markdown`, `.mdown`, or `.mkd` file.
 
 For Gitee, use the [Gitee Releases page](https://gitee.com/renqilei/remark/releases). Direct file links there work only after the Gitee Release and its assets have been published; use the GitHub links above meanwhile.
 
@@ -50,13 +50,13 @@ Every entry should end with `OK`.
 
 ## Quick start
 
-- **Open a document:** Use `⌘O`, Finder, Dock drop, or drag a file onto Remark.
+- **Open a document:** Use `⌘O`, Finder, Dock drop, or drag a file onto ReMark.
 - **Edit visually:** Headings, lists, quotes, tables, code, formulas, and other content are rendered instead of showing their Markdown markers.
 - **Switch to source:** Choose **源码 / Source** to edit the exact Markdown text. Unsaved content follows you between modes.
 - **Save:** Press `⌘S`. Use `⇧⌘S` for Save As. Manual save is the default; automatic save is optional.
 - **Work with multiple files:** Files open in native macOS tabs by default. Use the Window menu or native tab gestures to move a tab into its own window or merge windows.
 - **Zoom the page:** Use `⌘+` / `⌘-` to change zoom, `⌘0` to reset, or the minus, percentage, and plus controls at the bottom-right. Each document tab zooms independently.
-- **Close documents:** Closing the last document window also quits Remark on macOS. Documents with real unsaved edits still ask for confirmation first.
+- **Close documents:** Closing the last document window also quits ReMark on macOS. Documents with real unsaved edits still ask for confirmation first.
 
 | Action | Shortcut |
 | --- | --- |
@@ -98,10 +98,10 @@ Every entry should end with `OK`.
 
 ## Privacy and document safety
 
-Remark does not require an account and includes no analytics or telemetry. Your documents remain local unless you open remote content or links, which may contact external servers.
+ReMark does not require an account and includes no analytics or telemetry. Your documents remain local unless you open remote content or links, which may contact external servers.
 
 - **Atomic saves:** Changes are written to a temporary file beside the document and renamed only after a successful write.
-- **Conflict protection:** If another app changes the file, Remark does not silently overwrite either version.
+- **Conflict protection:** If another app changes the file, ReMark does not silently overwrite either version.
 - **Recovery snapshots:** Unsaved content is stored in the app's local Application Support recovery directory and removed after a successful save or clean close.
 - **Controlled resources:** Relative images cannot escape the document directory. Absolute image paths require an explicit user selection.
 - **Untrusted markup:** Raw HTML is sanitized. Mermaid runs in strict mode and its SVG is sanitized; document scripts do not execute.
@@ -140,11 +140,11 @@ Installers are written to `release/`. See [docs/RELEASING.md](docs/RELEASING.md)
 
 ### Technical overview
 
-Remark uses Electron, React, and TypeScript. Milkdown/ProseMirror powers visual editing, CodeMirror 6 powers source editing, and a shared `DocumentSession` owns the unsaved Markdown buffer, dirty state, and mode-switch history. Renderer access to files and native resources goes through a sandboxed, typed IPC layer.
+ReMark uses Electron, React, and TypeScript. Milkdown/ProseMirror powers visual editing, CodeMirror 6 powers source editing, and a shared `DocumentSession` owns the unsaved Markdown buffer, dirty state, and mode-switch history. Renderer access to files and native resources goes through a sandboxed, typed IPC layer.
 
 ## Project status and limitations
 
-Remark is in early development. Please evaluate it on copies of important documents.
+ReMark is in early development. Please evaluate it on copies of important documents.
 
 - Current DMGs are unsigned prereleases; Apple notarization and stable Gatekeeper validation are not complete.
 - Visual editing may normalize some Markdown formatting. Unknown HTML and extension syntax are preserved through opaque nodes, but byte-for-byte source preservation is not guaranteed after a visual edit.
@@ -161,4 +161,4 @@ Remark is in early development. Please evaluate it on copies of important docume
 - [Changelog](CHANGELOG.md)
 - [Third-party notices](NOTICE.md)
 
-Remark is licensed under the [GNU General Public License v3.0](LICENSE).
+ReMark is licensed under the [GNU General Public License v3.0](LICENSE).

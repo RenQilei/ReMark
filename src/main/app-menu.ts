@@ -20,18 +20,18 @@ function resetFocusedWindowZoom(): void {
 export function installApplicationMenu(): void {
   const template: Electron.MenuItemConstructorOptions[] = [
     {
-      label: 'Remark',
+      label: 'ReMark',
       submenu: [
-        { role: 'about', label: '关于 Remark' },
+        { role: 'about', label: '关于 ReMark' },
         { type: 'separator' },
         { label: '全局设置…', accelerator: 'CmdOrCtrl+,', click: () => sendToFocusedWindow('settings:open') },
         { type: 'separator' },
         { role: 'services', label: '服务' },
-        { role: 'hide', label: '隐藏 Remark' },
+        { role: 'hide', label: '隐藏 ReMark' },
         { role: 'hideOthers', label: '隐藏其他' },
         { role: 'unhide', label: '全部显示' },
         { type: 'separator' },
-        { role: 'quit', label: '退出 Remark' },
+        { role: 'quit', label: '退出 ReMark' },
       ],
     },
     {

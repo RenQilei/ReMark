@@ -1,6 +1,6 @@
 # Third-party notices
 
-Remark is licensed under GPL-3.0-only. The application bundles third-party packages, including but not limited to:
+ReMark is licensed under GPL-3.0-only. The application bundles third-party packages, including but not limited to:
 
 - Electron — MIT License
 - React — MIT License

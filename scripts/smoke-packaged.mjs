@@ -8,12 +8,13 @@ const directory = await mkdtemp(path.join(tmpdir(), 'remark-packaged-smoke-'))
 const filePath = path.join(directory, 'packaged.md')
 await copyFile(path.resolve('tests/fixtures/technical.md'), filePath)
 const app = await electron.launch({
-  executablePath: path.resolve('release/mac-arm64/Remark.app/Contents/MacOS/Remark'),
+  executablePath: path.resolve('release/mac-arm64/ReMark.app/Contents/MacOS/ReMark'),
   args: [filePath],
   env: { ...process.env, REMARK_TEST_MODE: '1', REMARK_USER_DATA_DIR: path.join(directory, 'user-data') },
 })
 try {
-  const asarPath = path.resolve('release/mac-arm64/Remark.app/Contents/Resources/app.asar')
+  expect(await app.evaluate(({ app: electronApp }) => electronApp.getName())).toBe('ReMark')
+  const asarPath = path.resolve('release/mac-arm64/ReMark.app/Contents/Resources/app.asar')
   const asarSize = (await stat(asarPath)).size
   const entries = asar.listPackage(asarPath, { isPack: false })
   expect(entries.some((entry) => entry.replace(/^\/+/, '').startsWith('node_modules/'))).toBe(false)

@@ -68,8 +68,8 @@ jobs:
         run: |
           node scripts/build-dmg.mjs
           node scripts/build-dmg.mjs --x64
-      - run: hdiutil verify release/Remark-*-arm64.dmg
-      - run: hdiutil verify release/Remark-*-x64.dmg
+      - run: hdiutil verify release/ReMark-*-arm64.dmg
+      - run: hdiutil verify release/ReMark-*-x64.dmg
       - run: npm run smoke:packaged
       - run: npm run checksums
       - name: Publish GitHub Release
@@ -77,9 +77,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           if [[ "${{ steps.release.outputs.prerelease }}" == "true" ]]; then
-            gh release create "${{ steps.release.outputs.tag }}" release/*.dmg release/SHA256SUMS.txt --prerelease --title "Remark ${{ steps.release.outputs.tag }}" --notes "Unsigned prerelease. Verify SHA-256 before installation."
+            gh release create "${{ steps.release.outputs.tag }}" release/*.dmg release/SHA256SUMS.txt --prerelease --title "ReMark ${{ steps.release.outputs.tag }}" --notes "Unsigned prerelease. Verify SHA-256 before installation."
           else
-            gh release create "${{ steps.release.outputs.tag }}" release/*.dmg release/SHA256SUMS.txt --title "Remark ${{ steps.release.outputs.tag }}" --notes "Signed and notarized release."
+            gh release create "${{ steps.release.outputs.tag }}" release/*.dmg release/SHA256SUMS.txt --title "ReMark ${{ steps.release.outputs.tag }}" --notes "Signed and notarized release."
           fi
       - name: Publish Gitee Release when explicitly enabled
         if: vars.GITEE_PUBLISH == 'true'

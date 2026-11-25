@@ -77,7 +77,7 @@ export function App() {
       setSavedSource(initialSavedSource)
       setSettings(currentSettings)
       setMode(initialMode)
-      document.title = info.filePath?.split('/').pop() ?? (info.demo ? '产品手记.md' : info.isNew ? '未命名.md' : 'Remark')
+      document.title = info.filePath?.split('/').pop() ?? (info.demo ? '产品手记.md' : info.isNew ? '未命名.md' : 'ReMark')
     })
     const subscriptions = [
       window.remark.onSettingsChanged(setSettings),
@@ -101,7 +101,7 @@ export function App() {
         setFileState(opened)
         setSavedSource(markdownToSave)
         setBootstrap((current) => current ? { ...current, filePath: opened.filePath, isNew: false } : current)
-        document.title = opened.filePath.split('/').pop() ?? 'Remark'
+        document.title = opened.filePath.split('/').pop() ?? 'ReMark'
       }
       return opened
     } catch (error) {
@@ -122,7 +122,7 @@ export function App() {
         setFileState(opened)
         setSavedSource(markdownToSave)
         setBootstrap((current) => current ? { ...current, filePath: opened.filePath, isNew: false } : current)
-        document.title = opened.filePath.split('/').pop() ?? 'Remark'
+        document.title = opened.filePath.split('/').pop() ?? 'ReMark'
       }
       return opened
     } catch {
@@ -302,7 +302,7 @@ export function App() {
   if (!hasDocument) {
     return (
       <div className="app-shell empty-shell" data-theme={settings.theme} data-appearance={resolvedAppearance} style={shellStyle}>
-        <div className="empty-titlebar"><span>Remark</span></div>
+        <div className="empty-titlebar"><span>ReMark</span></div>
         <EmptyState onOpen={() => void window.remark.requestOpen()} onNew={() => void window.remark.newDocument()} />
         {settingsDialog}
       </div>

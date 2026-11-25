@@ -28,6 +28,17 @@ describe('alpha release preparation', () => {
     expect(guide).toContain('ask the maintainer')
   })
 
+  it('uses ReMark branding while preserving compatibility identifiers', () => {
+    const builder = read('electron-builder.yml')
+    expect(builder).toContain('productName: ReMark')
+    expect(builder).toContain('appId: com.remark.editor')
+    expect(builder).toContain('title: ReMark ${version}')
+    expect(read('scripts/build-dmg.mjs')).toContain('ReMark-${version}-unsigned-${arch}.dmg')
+    expect(read('scripts/smoke-packaged.mjs')).toContain('ReMark.app/Contents/MacOS/ReMark')
+    expect(read('src/main/app-menu.ts')).toContain("label: 'ReMark'")
+    expect(read('src/renderer/index.html')).toContain('<title>ReMark</title>')
+  })
+
   it('ignores build output, local settings, and signing credentials', () => {
     const ignore = read('.gitignore')
     for (const pattern of ['release/', 'test-results/', 'build/icon.iconset/', '.env', '.env.*', '*.p8', '*.p12', '*.mobileprovision', '.DS_Store']) {

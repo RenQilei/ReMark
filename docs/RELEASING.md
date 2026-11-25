@@ -95,16 +95,16 @@ Never present `<version>` or a filename pattern as a clickable download URL. Pub
 Current GitHub asset links use this form:
 
 ```text
-https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.3/Remark-0.1.0-alpha.3-unsigned-arm64.dmg
-https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.3/Remark-0.1.0-alpha.3-unsigned-x64.dmg
+https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.3/ReMark-0.1.0-alpha.3-unsigned-arm64.dmg
+https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.3/ReMark-0.1.0-alpha.3-unsigned-x64.dmg
 https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.3/SHA256SUMS.txt
 ```
 
 A Gitee repository and tag can exist without any Gitee Release. There is no valid direct file download until a Release and its attachments have been created. Gitee binary Releases are currently paused because each DMG exceeds the ordinary repository attachment limit. The following URLs are examples for a future completed upload, not currently available downloads:
 
 ```text
-https://gitee.com/renqilei/remark/releases/download/v0.1.0-alpha.3/Remark-0.1.0-alpha.3-unsigned-arm64.dmg
-https://gitee.com/renqilei/remark/releases/download/v0.1.0-alpha.3/Remark-0.1.0-alpha.3-unsigned-x64.dmg
+https://gitee.com/renqilei/remark/releases/download/v0.1.0-alpha.3/ReMark-0.1.0-alpha.3-unsigned-arm64.dmg
+https://gitee.com/renqilei/remark/releases/download/v0.1.0-alpha.3/ReMark-0.1.0-alpha.3-unsigned-x64.dmg
 https://gitee.com/renqilei/remark/releases/download/v0.1.0-alpha.3/SHA256SUMS.txt
 ```
 

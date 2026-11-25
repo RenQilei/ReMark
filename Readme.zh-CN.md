@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="build/icon.svg" alt="带有 Re 与实心向下箭头的 Remark 图标" width="128">
+  <img src="build/icon.svg" alt="带有 Re 与实心向下箭头的 ReMark 图标" width="128">
 </p>
 
-<h1 align="center">Remark</h1>
+<h1 align="center">ReMark</h1>
 
 <p align="center">
   <strong>文件优先的 macOS Markdown 阅读与编辑器</strong><br>
@@ -13,11 +13,11 @@
   <a href="README.md">English</a> · <strong>简体中文</strong>
 </p>
 
-Remark 直接打开本地 Markdown 文件，不需要 Vault、工作区导入、账号或文件管理器。默认就是真正的预览编辑器，一键即可切换完整源码编辑。
+ReMark 直接打开本地 Markdown 文件，不需要 Vault、工作区导入、账号或文件管理器。默认就是真正的预览编辑器，一键即可切换完整源码编辑。
 
 | 原生浅色 | 原生深色 |
 | --- | --- |
-| ![原生浅色主题下的 Remark](docs/assets/remark-light.png) | ![原生深色主题下的 Remark](docs/assets/remark-dark.png) |
+| ![原生浅色主题下的 ReMark](docs/assets/remark-light.png) | ![原生深色主题下的 ReMark](docs/assets/remark-dark.png) |
 
 ## 下载
 
@@ -27,12 +27,12 @@ Remark 直接打开本地 Markdown 文件，不需要 Vault、工作区导入、
 
 | 你的 Mac | 安装包 |
 | --- | --- |
-| Apple Silicon（M1 及更新芯片） | [下载 Apple Silicon 版 Remark](https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.3/Remark-0.1.0-alpha.3-unsigned-arm64.dmg) |
-| Intel | [下载 Intel 版 Remark](https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.3/Remark-0.1.0-alpha.3-unsigned-x64.dmg) |
+| Apple Silicon（M1 及更新芯片） | [下载 Apple Silicon 版 ReMark](https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.3/ReMark-0.1.0-alpha.3-unsigned-arm64.dmg) |
+| Intel | [下载 Intel 版 ReMark](https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.3/ReMark-0.1.0-alpha.3-unsigned-x64.dmg) |
 
 1. 点击上方与你的 Mac 匹配的链接，下载并打开 DMG 文件。
-2. 将 **Remark** 拖入 **应用程序**。
-3. 启动 Remark，打开 `.md`、`.markdown`、`.mdown` 或 `.mkd` 文件。
+2. 将 **ReMark** 拖入 **应用程序**。
+3. 启动 ReMark，打开 `.md`、`.markdown`、`.mdown` 或 `.mkd` 文件。
 
 Gitee 用户可访问 [Gitee Releases 页面](https://gitee.com/renqilei/remark/releases)。只有 Gitee Release 和附件实际发布后，那里的文件直链才有效；在此之前请使用上方的 GitHub 下载链接。
 
@@ -50,13 +50,13 @@ shasum -a 256 -c SHA256SUMS.txt
 
 ## 快速开始
 
-- **打开文档：** 使用 `⌘O`、Finder、Dock 拖入，或把文件拖到 Remark 窗口。
+- **打开文档：** 使用 `⌘O`、Finder、Dock 拖入，或把文件拖到 ReMark 窗口。
 - **直接编辑：** 标题、列表、引用、表格、代码和公式等内容直接呈现，不显示 Markdown 标记。
 - **切换源码：** 点击 **源码 / Source** 编辑原始 Markdown 文本。未保存内容会跟随你切换模式。
 - **保存：** 按 `⌘S`，另存为按 `⇧⌘S`。默认手动保存，也可在设置中开启自动保存。
 - **处理多份文件：** 默认使用 macOS 原生标签页。通过窗口菜单或原生标签操作，将标签拖成独立窗口或合并窗口。
 - **缩放页面：** 使用 `⌘+`、`⌘-` 调整比例，`⌘0` 恢复 100%；也可使用右下角的“−、百分比、+”控件。每个标签页独立缩放。
-- **关闭文档：** 关闭最后一份文档窗口后退出 Remark。存在真实的未保存修改时，仍会先弹出确认。
+- **关闭文档：** 关闭最后一份文档窗口后退出 ReMark。存在真实的未保存修改时，仍会先弹出确认。
 
 | 操作 | 快捷键 |
 | --- | --- |
@@ -98,7 +98,7 @@ shasum -a 256 -c SHA256SUMS.txt
 
 ## 隐私与文件安全
 
-Remark 不需要账号，也不包含分析统计或遥测。文档始终保存在本机，除非你主动打开远程内容或链接；这些操作可能访问外部服务器。
+ReMark 不需要账号，也不包含分析统计或遥测。文档始终保存在本机，除非你主动打开远程内容或链接；这些操作可能访问外部服务器。
 
 - **原子保存：** 先写入文档旁的临时文件，成功后再原子替换，避免写坏原文件。
 - **冲突保护：** 其他应用修改同一文件时，不会静默覆盖任何一个版本。
@@ -140,11 +140,11 @@ npm run checksums
 
 ### 技术概览
 
-Remark 使用 Electron、React 和 TypeScript。Milkdown/ProseMirror 负责预览，CodeMirror 6 负责源码编辑；共享 `DocumentSession` 管理未保存 Markdown、脏状态和模式切换历史。渲染进程通过沙箱隔离、带类型约束的 IPC 访问文件和原生资源。
+ReMark 使用 Electron、React 和 TypeScript。Milkdown/ProseMirror 负责预览，CodeMirror 6 负责源码编辑；共享 `DocumentSession` 管理未保存 Markdown、脏状态和模式切换历史。渲染进程通过沙箱隔离、带类型约束的 IPC 访问文件和原生资源。
 
 ## 项目状态与限制
 
-Remark 仍处于早期开发阶段，请先在自己的文档副本上试用。
+ReMark 仍处于早期开发阶段，请先在自己的文档副本上试用。
 
 - 当前 DMG 是未签名预发布包，尚未完成 Apple 公证和稳定版 Gatekeeper 验证。
 - 富文本编辑可能规范化部分 Markdown 写法。未知 HTML 和扩展语法通过不透明节点保留，但富文本编辑后不承诺逐字节不变。
@@ -161,4 +161,4 @@ Remark 仍处于早期开发阶段，请先在自己的文档副本上试用。
 - [更新日志](CHANGELOG.md)
 - [第三方组件声明](NOTICE.md)
 
-Remark 采用 [GNU General Public License v3.0](LICENSE) 开源。
+ReMark 采用 [GNU General Public License v3.0](LICENSE) 开源。

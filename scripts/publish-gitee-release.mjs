@@ -19,7 +19,7 @@ if (!apply) {
     body: JSON.stringify({
       access_token: token,
       tag_name: tag,
-      name: `Remark ${tag}`,
+      name: `ReMark ${tag}`,
       body: process.env.PRERELEASE === 'true' ? 'Unsigned prerelease. Verify SHA-256 before installation.' : 'Signed and notarized release.',
       target_commitish: 'main',
       prerelease: process.env.PRERELEASE === 'true',

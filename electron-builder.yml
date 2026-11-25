@@ -1,5 +1,5 @@
 appId: com.remark.editor
-productName: Remark
+productName: ReMark
 directories:
   output: release
 files:
@@ -27,9 +27,9 @@ mac:
           - markdown
           - mdown
           - mkd
-    NSHumanReadableCopyright: Remark Contributors. GPL-3.0-only.
+    NSHumanReadableCopyright: ReMark Contributors. GPL-3.0-only.
 dmg:
-  title: Remark ${version}
+  title: ReMark ${version}
   artifactName: ${productName}-${version}-${arch}.dmg
   contents:
     - x: 140
