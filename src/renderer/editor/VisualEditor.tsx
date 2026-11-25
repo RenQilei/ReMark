@@ -175,7 +175,7 @@ export const VisualEditor = forwardRef<EditorController, VisualEditorProps>(func
       if (disposed) return
       const view = crepe.editor.action((ctx) => ctx.get(editorViewCtx))
       viewRef.current = view
-      view.dom.setAttribute('aria-label', '所见即所得编辑器')
+      view.dom.setAttribute('aria-label', '预览编辑器')
       lastMarkdown = restoreAssetUrls(crepe.getMarkdown(), documentId)
       onBaselineReadyRef.current?.(lastMarkdown, anchorAtSourceOffset(lastMarkdown, 0, 'visual'))
       const selectionAnchor = initialAnchorRef.current

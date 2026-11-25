@@ -17,7 +17,7 @@ test('keeps dirty status and primary tools accessible at 1024px', async () => {
     await window.setViewportSize({ width: 1024, height: 768 })
     await window.getByRole('button', { name: '源码', exact: true }).click()
     await window.getByRole('textbox', { name: 'Markdown 源码' }).fill('# Changed\n')
-    await window.getByRole('button', { name: '所见即所得', exact: true }).click()
+    await window.getByRole('button', { name: '预览', exact: true }).click()
     await expect(window.getByLabel('未保存')).toBeVisible()
 
     await window.getByRole('button', { name: '查找', exact: true }).click()

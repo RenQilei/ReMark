@@ -13,7 +13,7 @@
   <strong>English</strong> · <a href="Readme.zh-CN.md">简体中文</a>
 </p>
 
-Remark opens local Markdown files directly—no vaults, workspace imports, accounts, or file manager. Its default view is a true WYSIWYG editor, with a full source editor one click away.
+Remark opens local Markdown files directly—no vaults, workspace imports, accounts, or file manager. Its default view is a live preview editor, with a full source editor one click away.
 
 | Native light | Native dark |
 | --- | --- |
@@ -76,7 +76,7 @@ Every entry should end with `OK`.
 
 ### Documents without the overhead
 
-- WYSIWYG and source editing with consistent unsaved content and cross-mode undo checkpoints.
+- preview and source editing with consistent unsaved content and cross-mode undo checkpoints.
 - Native macOS tabs, independent windows, recent files, and duplicate-file focusing.
 - Find and replace within the current document, plus a heading outline.
 - Manual save, optional autosave, close protection, crash recovery, and external-change conflict handling.

@@ -86,7 +86,7 @@ test('restores the first visible block at the same viewport coordinate in both e
     expect(sourceBlock?.text).toBe(visualBlock.text)
     expect(sourceBlock?.blockViewportOffset).toBeCloseTo(visualBlock.blockViewportOffset, 0)
 
-    await window.getByRole('button', { name: '所见即所得', exact: true }).click()
+    await window.getByRole('button', { name: '预览', exact: true }).click()
     await expect(window.locator('.milkdown-host')).toHaveAttribute('data-ready', 'true')
     await expectVisualBlock(window, visualBlock)
   } finally {
@@ -109,7 +109,7 @@ test('restores the nearest surviving block when the original block was deleted',
     await window.keyboard.press('Backspace')
     const source = window.getByRole('textbox', { name: 'Markdown 源码' })
     await expect(source).not.toContainText(visualBlock.text)
-    await window.getByRole('button', { name: '所见即所得', exact: true }).click()
+    await window.getByRole('button', { name: '预览', exact: true }).click()
     await expect(window.locator('.milkdown-host')).toHaveAttribute('data-ready', 'true')
     const restored = await captureVisualBlock(window)
     expect(restored.text).not.toBe(visualBlock.text)

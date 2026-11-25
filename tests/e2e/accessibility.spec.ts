@@ -7,7 +7,7 @@ test('exposes editor semantics and keeps dialogs keyboard accessible', async () 
   })
   try {
     const window = await app.firstWindow()
-    await expect(window.getByRole('button', { name: '所见即所得', exact: true })).toHaveAttribute('aria-pressed', 'true')
+    await expect(window.getByRole('button', { name: '预览', exact: true })).toHaveAttribute('aria-pressed', 'true')
     await expect(window.getByRole('toolbar', { name: '文档格式' })).toBeVisible()
     await window.keyboard.press('Meta+,')
     await expect(window.getByRole('dialog', { name: '全局设置' })).toBeVisible()

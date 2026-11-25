@@ -31,7 +31,7 @@ test('keeps content through 50 unsaved mode switches', async () => {
     await window.getByRole('button', { name: '源码', exact: true }).click()
     await window.getByRole('textbox', { name: 'Markdown 源码' }).fill('# Persistent\n\n中文内容\n')
     for (let index = 0; index < 25; index += 1) {
-      await window.getByRole('button', { name: '所见即所得', exact: true }).click()
+      await window.getByRole('button', { name: '预览', exact: true }).click()
       await expect(window.locator('.milkdown-host')).toHaveAttribute('data-ready', 'true')
       await expect(window.locator('.ProseMirror')).toContainText('中文内容')
       await window.getByRole('button', { name: '源码', exact: true }).click()
@@ -61,7 +61,7 @@ test('opens a one-megabyte technical document within the performance budget', as
     expect(Date.now() - startedAt).toBeLessThan(30_000)
     await window.getByRole('button', { name: '源码', exact: true }).click()
     await expect(window.getByRole('textbox', { name: 'Markdown 源码' })).toContainText('# Large document')
-    await window.getByRole('button', { name: '所见即所得', exact: true }).click()
+    await window.getByRole('button', { name: '预览', exact: true }).click()
     await expect(window.locator('.milkdown-host')).toHaveAttribute('data-ready', 'true')
   } finally {
     await stop(app)

@@ -31,7 +31,7 @@ test('edits naturally in both modes and keeps unsaved content consistent', async
     await expect(source).toContainText('中文编辑')
 
     await source.fill('# Source final\n\n纯源码编辑\n')
-    await window.getByRole('button', { name: '所见即所得', exact: true }).click()
+    await window.getByRole('button', { name: '预览', exact: true }).click()
     await expect(window.getByRole('heading', { name: 'Source final' })).toBeVisible()
     await expect(window.locator('.ProseMirror')).toContainText('纯源码编辑')
     await expect(window.getByLabel('未保存')).toBeVisible()
@@ -64,7 +64,7 @@ test('uses session checkpoints when undo crosses an editor mode boundary', async
     await window.getByRole('button', { name: '源码', exact: true }).click()
     const source = window.getByRole('textbox', { name: 'Markdown 源码' })
     await source.fill('# Changed in source\n')
-    await window.getByRole('button', { name: '所见即所得', exact: true }).click()
+    await window.getByRole('button', { name: '预览', exact: true }).click()
     await expect(window.getByRole('heading', { name: 'Changed in source' })).toBeVisible()
 
     await window.locator('.ProseMirror').click()

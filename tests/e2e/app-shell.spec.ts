@@ -29,7 +29,7 @@ test('shows the document-first visual editor shell', async () => {
   const window = await app.firstWindow()
 
   await expect(window.getByRole('heading', { name: '让写作回到文档本身' })).toBeVisible()
-  await expect(window.getByRole('button', { name: '所见即所得', exact: true })).toBeVisible()
+  await expect(window.getByRole('button', { name: '预览', exact: true })).toBeVisible()
   await expect(window.getByRole('button', { name: '源码', exact: true })).toBeVisible()
   await expect(window.getByRole('toolbar', { name: '文档格式' })).toBeVisible()
   await expect(window.getByTestId('file-tree')).toHaveCount(0)

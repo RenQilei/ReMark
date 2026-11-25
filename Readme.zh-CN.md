@@ -13,7 +13,7 @@
   <a href="README.md">English</a> · <strong>简体中文</strong>
 </p>
 
-Remark 直接打开本地 Markdown 文件，不需要 Vault、工作区导入、账号或文件管理器。默认就是真正的所见即所得编辑器，一键即可切换完整源码编辑。
+Remark 直接打开本地 Markdown 文件，不需要 Vault、工作区导入、账号或文件管理器。默认就是真正的预览编辑器，一键即可切换完整源码编辑。
 
 | 原生浅色 | 原生深色 |
 | --- | --- |
@@ -76,7 +76,7 @@ shasum -a 256 -c SHA256SUMS.txt
 
 ### 文件优先，没有额外负担
 
-- 所见即所得与源码编辑共享未保存内容，支持跨模式撤销检查点。
+- 预览与源码编辑共享未保存内容，支持跨模式撤销检查点。
 - macOS 原生标签页、独立窗口、最近文件和同文件去重。
 - 当前文档查找替换，以及标题大纲导航。
 - 手动保存、可选自动保存、关闭保护、崩溃恢复和外部修改冲突处理。
@@ -140,7 +140,7 @@ npm run checksums
 
 ### 技术概览
 
-Remark 使用 Electron、React 和 TypeScript。Milkdown/ProseMirror 负责所见即所得，CodeMirror 6 负责源码编辑；共享 `DocumentSession` 管理未保存 Markdown、脏状态和模式切换历史。渲染进程通过沙箱隔离、带类型约束的 IPC 访问文件和原生资源。
+Remark 使用 Electron、React 和 TypeScript。Milkdown/ProseMirror 负责预览，CodeMirror 6 负责源码编辑；共享 `DocumentSession` 管理未保存 Markdown、脏状态和模式切换历史。渲染进程通过沙箱隔离、带类型约束的 IPC 访问文件和原生资源。
 
 ## 项目状态与限制
 

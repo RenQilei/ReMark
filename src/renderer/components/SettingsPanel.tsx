@@ -31,7 +31,7 @@ export function SettingsPanel({ settings, onChange, onClose }: SettingsPanelProp
         <div className="settings-content">
           <section className="settings-section">
             <h3>通用</h3>
-            <label className="setting-row"><span><strong>默认编辑模式</strong><small>打开新文档时使用</small></span><select value={settings.defaultMode} onChange={(event) => onChange({ defaultMode: event.target.value as AppSettings['defaultMode'] })}><option value="visual">所见即所得</option><option value="source">源码</option></select></label>
+            <label className="setting-row"><span><strong>默认编辑模式</strong><small>打开新文档时使用</small></span><select value={settings.defaultMode} onChange={(event) => onChange({ defaultMode: event.target.value as AppSettings['defaultMode'] })}><option value="visual">预览</option><option value="source">源码</option></select></label>
             <label className="setting-row"><span><strong>打开文件时</strong><small>也可遵循 macOS 的标签页偏好</small></span><select value={settings.openWindowBehavior} onChange={(event) => onChange({ openWindowBehavior: event.target.value as AppSettings['openWindowBehavior'] })}><option value="tab">在当前窗口新建标签</option><option value="window">新建独立窗口</option><option value="system">遵循系统设置</option></select></label>
             <label className="setting-row"><span><strong>自动保存</strong><small>停止输入后保存到当前文件</small></span><input type="checkbox" role="switch" checked={settings.autoSave} onChange={(event) => onChange({ autoSave: event.target.checked })} /></label>
             <label className="setting-row"><span><strong>记住每份文件的模式</strong><small>优先于全局默认编辑模式</small></span><input type="checkbox" role="switch" checked={settings.rememberModePerFile} onChange={(event) => onChange({ rememberModePerFile: event.target.checked })} /></label>

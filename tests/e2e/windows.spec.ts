@@ -83,7 +83,7 @@ test('saves and switches only the focused document tab', async () => {
     })
     await expect.poll(() => readFile(secondFile, 'utf8')).toBe('# Second edited\n\nOnly the second file.\n')
     expect(await readFile(firstFile, 'utf8')).toBe('# First\n')
-    await secondWindow.getByRole('button', { name: '所见即所得', exact: true }).click()
+    await secondWindow.getByRole('button', { name: '预览', exact: true }).click()
     await expect(secondWindow.getByRole('heading', { name: 'Second edited' })).toBeVisible()
 
     await app.evaluate(({ BrowserWindow }, id) => {

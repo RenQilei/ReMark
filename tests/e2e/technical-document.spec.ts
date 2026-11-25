@@ -79,7 +79,7 @@ test('renders Chinese and multiline Mermaid labels as safe SVG text', async () =
     await expect(source).toContainText('Flutter App<br/>iOS / Android')
 
     await source.fill('')
-    await window.getByRole('button', { name: '所见即所得', exact: true }).click()
+    await window.getByRole('button', { name: '预览', exact: true }).click()
     await window.locator('.ProseMirror').click()
     await window.keyboard.type('```mermaid')
     await expect(window.locator('.mermaid-node')).toHaveCount(1)

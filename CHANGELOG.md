@@ -49,7 +49,7 @@ All notable changes to Remark are documented here. Versions follow [Semantic Ver
 ### Added
 
 - Document-first macOS Markdown reading and editing without a file manager.
-- WYSIWYG and source modes with consistent unsaved content and cross-mode undo checkpoints.
+- preview and source modes with consistent unsaved content and cross-mode undo checkpoints.
 - Native macOS tabs, independent windows, Finder opening, and duplicate-file focusing.
 - Atomic saves, external-change protection, close confirmation, optional autosave, and crash recovery.
 - CommonMark, GFM, tables, task lists, code highlighting, footnotes, KaTeX, Mermaid, and sanitized raw HTML.
