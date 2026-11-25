@@ -26,8 +26,8 @@ export function SettingsPanel({ settings, onChange, onClose }: SettingsPanelProp
 
   return (
     <div className="settings-backdrop" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
-      <section className="settings-panel" role="dialog" aria-modal="true" aria-label="设置">
-        <header className="settings-heading"><div><h2>设置</h2><p>让 Remark 按你的方式呈现文档。</p></div><button type="button" className="icon-button" aria-label="关闭设置" onClick={onClose}><X size={18} /></button></header>
+      <section className="settings-panel" role="dialog" aria-modal="true" aria-label="全局设置">
+        <header className="settings-heading"><div><h2>全局设置</h2><p>应用于全部文档、标签页和窗口。</p></div><button type="button" className="icon-button" aria-label="关闭设置" onClick={onClose}><X size={18} /></button></header>
         <div className="settings-content">
           <section className="settings-section">
             <h3>通用</h3>

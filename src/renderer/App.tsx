@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Settings2 } from 'lucide-react'
 import { ZoomControl } from './components/ZoomControl'
 import type { ZoomDirection } from '../shared/zoom'
 import type { BootstrapInfo } from '../shared/api'
@@ -219,6 +218,12 @@ export function App() {
   const handleEditorKeyboard = useCallback((event: React.KeyboardEvent) => {
     if (!event.metaKey && !event.ctrlKey) return
     const key = event.key.toLowerCase()
+    if (key === ',') {
+      event.preventDefault()
+      event.stopPropagation()
+      setSettingsOpen(true)
+      return
+    }
     if (!event.altKey && (key === '=' || key === '+' || event.code === 'NumpadAdd')) {
       event.preventDefault()
       event.stopPropagation()
@@ -297,7 +302,7 @@ export function App() {
   if (!hasDocument) {
     return (
       <div className="app-shell empty-shell" data-theme={settings.theme} data-appearance={resolvedAppearance} style={shellStyle}>
-        <div className="empty-titlebar"><span>Remark</span><button type="button" className="icon-button empty-settings" aria-label="设置" onClick={() => setSettingsOpen(true)}><Settings2 size={16} /></button></div>
+        <div className="empty-titlebar"><span>Remark</span></div>
         <EmptyState onOpen={() => void window.remark.requestOpen()} onNew={() => void window.remark.newDocument()} />
         {settingsDialog}
       </div>
@@ -310,7 +315,6 @@ export function App() {
         <div className="document-identity"><span className="document-name">{documentName}</span>{dirty && <span className="dirty-dot" aria-label="未保存" />}</div>
         <EditorToolbar onAction={handleToolbarAction} onFind={() => { setOutlineOpen(false); setFindOpen(true) }} onOutline={() => { setFindOpen(false); setOutlineOpen((value) => !value) }} />
         <ModeSwitch mode={mode} onChange={changeMode} />
-        <button type="button" className="icon-button settings-button" aria-label="设置" onClick={() => setSettingsOpen(true)}><Settings2 size={16} /></button>
       </header>
 
       <main className={`editor-surface ${mode === 'source' ? 'source-mode' : ''}`}>

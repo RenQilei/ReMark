@@ -24,7 +24,7 @@ export function installApplicationMenu(): void {
       submenu: [
         { role: 'about', label: '关于 Remark' },
         { type: 'separator' },
-        { label: '设置…', accelerator: 'CmdOrCtrl+,', click: () => sendToFocusedWindow('settings:open') },
+        { label: '全局设置…', accelerator: 'CmdOrCtrl+,', click: () => sendToFocusedWindow('settings:open') },
         { type: 'separator' },
         { role: 'services', label: '服务' },
         { role: 'hide', label: '隐藏 Remark' },

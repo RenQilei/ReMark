@@ -182,3 +182,35 @@ test('quits after all clean document windows are closed', async () => {
     await rm(directory, { recursive: true, force: true })
   }
 })
+
+
+test('opens global settings from the application menu and applies appearance to all documents', async () => {
+  const directory = await mkdtemp(path.join(tmpdir(), 'remark-e2e-global-settings-'))
+  const firstFile = path.join(directory, 'first.md')
+  const secondFile = path.join(directory, 'second.md')
+  await writeFile(firstFile, '# First\n')
+  await writeFile(secondFile, '# Second\n')
+  const app = await electron.launch({
+    args: ['out/main/index.js', firstFile],
+    env: { ...process.env, REMARK_TEST_MODE: '1', REMARK_USER_DATA_DIR: path.join(directory, 'user-data') },
+  })
+
+  try {
+    const firstWindow = await app.firstWindow()
+    await app.evaluate(({ app: electronApp }, filePath) => {
+      electronApp.emit('open-file', { preventDefault() {} }, filePath)
+    }, secondFile)
+    await expect.poll(() => app.windows().length).toBe(2)
+    const secondWindow = app.windows()[1]
+    await expect(secondWindow.getByRole('toolbar', { name: '文档格式' })).toBeVisible()
+    await secondWindow.keyboard.press('Meta+,')
+    await expect(secondWindow.getByRole('dialog', { name: '全局设置' })).toBeVisible()
+    await secondWindow.getByRole('button', { name: '深色', exact: true }).click()
+    await expect(firstWindow.locator('.app-shell')).toHaveAttribute('data-appearance', 'dark')
+    await expect(secondWindow.locator('.app-shell')).toHaveAttribute('data-appearance', 'dark')
+    await secondWindow.getByRole('button', { name: '关闭设置', exact: true }).click()
+  } finally {
+    await app.close()
+    await rm(directory, { recursive: true, force: true })
+  }
+})

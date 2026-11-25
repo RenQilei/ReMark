@@ -19,6 +19,7 @@ test('opens a clean empty document window without a file manager', async () => {
   await expect(window.getByRole('button', { name: '新建文档' })).toBeVisible()
   await expect(window.getByTestId('file-tree')).toHaveCount(0)
   await expect(window.getByTestId('split-editor')).toHaveCount(0)
+  await expect(window.getByRole('button', { name: '设置', exact: true })).toHaveCount(0)
 
   await app.close()
 })
@@ -33,6 +34,7 @@ test('shows the document-first visual editor shell', async () => {
   await expect(window.getByRole('toolbar', { name: '文档格式' })).toBeVisible()
   await expect(window.getByTestId('file-tree')).toHaveCount(0)
   await expect(window.getByTestId('split-editor')).toHaveCount(0)
+  await expect(window.getByRole('button', { name: '设置', exact: true })).toHaveCount(0)
 
   await app.close()
 })

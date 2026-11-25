@@ -28,8 +28,8 @@ test('keeps dirty status and primary tools accessible at 1024px', async () => {
     await expect(window.getByRole('complementary', { name: '文档大纲' })).toBeVisible()
     await window.getByRole('button', { name: '关闭大纲', exact: true }).click()
 
-    await window.getByRole('button', { name: '设置', exact: true }).click()
-    await expect(window.getByRole('dialog', { name: '设置' })).toBeVisible()
+    await window.keyboard.press('Meta+,')
+    await expect(window.getByRole('dialog', { name: '全局设置' })).toBeVisible()
     await window.getByRole('button', { name: '关闭设置', exact: true }).click()
     await window.getByRole('button', { name: '源码', exact: true }).click()
     await expect(window.getByRole('textbox', { name: 'Markdown 源码' })).toContainText('# Changed')
