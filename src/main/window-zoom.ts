@@ -3,7 +3,7 @@ import { clampZoomFactor, nextZoomFactor } from '../shared/zoom'
 import type { ZoomDirection } from '../shared/zoom'
 
 export function installWindowZoom(window: BrowserWindow): void {
-  window.webContents.setZoomMode('manual')
+  window.webContents.setZoomMode('isolated')
 }
 
 export function setWindowZoom(window: BrowserWindow, factor: number): number {

@@ -33,6 +33,10 @@ async function focusWindow(app: ElectronApplication, page: Page): Promise<void> 
   }, id)
 }
 
+async function viewportState(page: Page): Promise<{ width: number; pixelRatio: number }> {
+  return page.evaluate(() => ({ width: window.innerWidth, pixelRatio: window.devicePixelRatio }))
+}
+
 test('supports isolated zoom controls, shortcuts, presets, and a taller status bar', async () => {
   const { app, directory } = await launch('zoom.md')
   try {
@@ -43,6 +47,7 @@ test('supports isolated zoom controls, shortcuts, presets, and a taller status b
     await expect(window.locator('.status-bar')).toHaveCSS('height', '36px')
     await expect(percentage).toHaveValue('100')
     expect(await factor(app)).toBe(1)
+    const initialViewport = await viewportState(window)
 
     await zoomIn.click()
     await expect.poll(() => factor(app)).toBe(1.1)
@@ -61,6 +66,9 @@ test('supports isolated zoom controls, shortcuts, presets, and a taller status b
 
     await percentage.selectOption('150')
     await expect.poll(() => factor(app)).toBe(1.5)
+    const enlargedViewport = await viewportState(window)
+    expect(enlargedViewport.width).toBeLessThan(initialViewport.width)
+    expect(enlargedViewport.pixelRatio).toBeGreaterThan(initialViewport.pixelRatio)
     await window.keyboard.press('Meta+NumpadSubtract')
     await expect.poll(() => factor(app)).toBe(1.25)
     await window.keyboard.press('Meta+NumpadAdd')
@@ -74,6 +82,7 @@ test('supports isolated zoom controls, shortcuts, presets, and a taller status b
     expect(await factor(app)).toBe(0.5)
     await window.keyboard.press('Meta+0')
     await expect.poll(() => factor(app)).toBe(1)
+    expect(await viewportState(window)).toEqual(initialViewport)
 
     await window.setViewportSize({ width: 720, height: 650 })
     await expect(percentage).toBeVisible()
@@ -99,16 +108,23 @@ test('keeps zoom independent for each document tab', async () => {
     await app.evaluate(({ app: electronApp }, file) => electronApp.emit('open-file', { preventDefault() {} }, file), secondFile)
     await expect.poll(() => app.windows().length).toBe(2)
     const secondWindow = app.windows()[1]
+    const firstInitialViewport = await viewportState(firstWindow)
+    const secondInitialViewport = await viewportState(secondWindow)
     await focusWindow(app, secondWindow)
     await secondWindow.getByRole('combobox', { name: '缩放比例' }).selectOption('150')
     await expect.poll(() => factor(app, secondWindow)).toBe(1.5)
+    const secondEnlargedViewport = await viewportState(secondWindow)
+    expect(secondEnlargedViewport.width).toBeLessThan(secondInitialViewport.width)
+    expect(secondEnlargedViewport.pixelRatio).toBeGreaterThan(secondInitialViewport.pixelRatio)
     expect(await factor(app, firstWindow)).toBe(1)
+    expect(await viewportState(firstWindow)).toEqual(firstInitialViewport)
 
     await focusWindow(app, firstWindow)
     await expect(firstWindow.getByRole('combobox', { name: '缩放比例' })).toHaveValue('100')
     await firstWindow.getByRole('combobox', { name: '缩放比例' }).selectOption('75')
     await expect.poll(() => factor(app, firstWindow)).toBe(0.75)
     expect(await factor(app, secondWindow)).toBe(1.5)
+    expect(await viewportState(secondWindow)).toEqual(secondEnlargedViewport)
 
     await focusWindow(app, secondWindow)
     await expect(secondWindow.getByRole('combobox', { name: '缩放比例' })).toHaveValue('150')
