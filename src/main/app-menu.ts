@@ -1,8 +1,20 @@
 import { BrowserWindow, Menu } from 'electron'
+import { setWindowZoom, stepWindowZoom } from './window-zoom'
+import type { ZoomDirection } from '../shared/zoom'
 
 function sendToFocusedWindow(channel: string): void {
   const window = BrowserWindow.getFocusedWindow()
   window?.webContents.send(channel)
+}
+
+function zoomFocusedWindow(direction: ZoomDirection): void {
+  const window = BrowserWindow.getFocusedWindow()
+  if (window) stepWindowZoom(window, direction)
+}
+
+function resetFocusedWindowZoom(): void {
+  const window = BrowserWindow.getFocusedWindow()
+  if (window) setWindowZoom(window, 1)
 }
 
 export function installApplicationMenu(): void {
@@ -37,7 +49,20 @@ export function installApplicationMenu(): void {
       ],
     },
     { role: 'editMenu', label: '编辑' },
-    { role: 'viewMenu', label: '显示' },
+    {
+      label: '显示',
+      submenu: [
+        { role: 'reload', label: '重新加载' },
+        { role: 'forceReload', label: '强制重新加载' },
+        { role: 'toggleDevTools', label: '开发者工具' },
+        { type: 'separator' },
+        { label: '实际大小', click: resetFocusedWindowZoom },
+        { label: '放大', click: () => zoomFocusedWindow('in') },
+        { label: '缩小', click: () => zoomFocusedWindow('out') },
+        { type: 'separator' },
+        { role: 'togglefullscreen', label: '进入全屏' },
+      ],
+    },
     { role: 'windowMenu', label: '窗口' },
     { role: 'help', label: '帮助' },
   ]

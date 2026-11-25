@@ -3,6 +3,8 @@ import type { IpcMainInvokeEvent } from 'electron'
 import path from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { installApplicationMenu } from './app-menu'
+import { installWindowZoom, setWindowZoom, stepWindowZoom } from './window-zoom'
+import type { ZoomDirection } from '../shared/zoom'
 import { SettingsService } from './settings-service'
 import { DocumentService } from './document-service'
 import { FileService } from './file-service'
@@ -58,6 +60,7 @@ export function createDocumentWindow(filePath: string | null = null, isNew = fal
     },
   })
 
+  installWindowZoom(window)
   documents.register(window, filePath, { demo: process.env.REMARK_DEMO === '1', isNew, recoveryId })
   windows.add(window)
   if (documentKey) {
@@ -148,6 +151,17 @@ if (hasSingleInstanceLock) void app.whenReady().then(async () => {
     nativeTheme.themeSource = updated.appearance
     for (const window of windows) window.webContents.send('settings:changed', updated)
     return updated
+  })
+  ipcMain.handle('window:zoom:get', (event) => BrowserWindow.fromWebContents(event.sender)?.webContents.getZoomFactor() ?? 1)
+  ipcMain.handle('window:zoom:set', (event, factor: number) => {
+    const window = BrowserWindow.fromWebContents(event.sender)
+    if (!window) throw new Error('IPC sender is not a document window')
+    return setWindowZoom(window, factor)
+  })
+  ipcMain.handle('window:zoom:step', (event, direction: ZoomDirection) => {
+    const window = BrowserWindow.fromWebContents(event.sender)
+    if (!window) throw new Error('IPC sender is not a document window')
+    return stepWindowZoom(window, direction)
   })
   ipcMain.handle('dialog:open', showOpenDialog)
   ipcMain.handle('document:new', () => addWindowForCurrentPreference(createDocumentWindow(null, true)))

@@ -2,6 +2,7 @@ import type { AppSettings } from './settings'
 import type { OpenedFile } from './files'
 import type { RecoverySnapshot } from './recovery'
 import type { EditorMode } from './documents'
+import type { ZoomDirection } from './zoom'
 
 export interface BootstrapInfo {
   windowId: number
@@ -25,6 +26,10 @@ export interface RemarkAPI {
   setDirty(dirty: boolean): Promise<void>
   writeRecovery(input: { markdown: string; savedMarkdown: string; mode: EditorMode }): Promise<void>
   closeWindow(discard: boolean): Promise<void>
+  getZoomFactor(): Promise<number>
+  setZoomFactor(factor: number): Promise<number>
+  stepZoom(direction: ZoomDirection): Promise<number>
+  onZoomChanged(callback: (factor: number) => void): () => void
   onSettingsChanged(callback: (settings: AppSettings) => void): () => void
   onOpenSettings(callback: () => void): () => void
   onRequestOpen(callback: () => void): () => void

@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Settings2 } from 'lucide-react'
+import { ZoomControl } from './components/ZoomControl'
+import type { ZoomDirection } from '../shared/zoom'
 import type { BootstrapInfo } from '../shared/api'
 import { MarkdownDocumentSession } from '../shared/documents'
 import type { DocumentSnapshot, EditorAnchor, EditorMode } from '../shared/documents'
@@ -42,6 +44,7 @@ export function App() {
   const [externalChange, setExternalChange] = useState<OpenedFile | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [systemDark, setSystemDark] = useState(() => window.matchMedia('(prefers-color-scheme: dark)').matches)
+  const [zoomFactor, setZoomFactor] = useState(1)
   const dirty = source !== savedSource
   const hasDocument = Boolean(bootstrap && (bootstrap.demo || bootstrap.isNew || bootstrap.filePath || bootstrap.recovery))
 
@@ -50,6 +53,16 @@ export function App() {
     const update = () => setSystemDark(media.matches)
     media.addEventListener('change', update)
     return () => media.removeEventListener('change', update)
+  }, [])
+
+  useEffect(() => {
+    let active = true
+    const unsubscribe = window.remark.onZoomChanged(setZoomFactor)
+    void window.remark.getZoomFactor().then((current) => { if (active) setZoomFactor(current) })
+    return () => {
+      active = false
+      unsubscribe()
+    }
   }, [])
 
   useEffect(() => {
@@ -184,9 +197,33 @@ export function App() {
     setViewportAnchor(snapshot.viewportAnchor)
     setEpoch((value) => value + 1)
   }, [])
+  const changeZoom = useCallback((next: number) => {
+    void window.remark.setZoomFactor(next).then(setZoomFactor)
+  }, [])
+  const stepZoom = useCallback((direction: ZoomDirection) => {
+    void window.remark.stepZoom(direction).then(setZoomFactor)
+  }, [])
   const handleEditorKeyboard = useCallback((event: React.KeyboardEvent) => {
     if (!event.metaKey && !event.ctrlKey) return
     const key = event.key.toLowerCase()
+    if (!event.altKey && (key === '=' || key === '+' || event.code === 'NumpadAdd')) {
+      event.preventDefault()
+      event.stopPropagation()
+      stepZoom('in')
+      return
+    }
+    if (!event.altKey && (key === '-' || event.code === 'NumpadSubtract')) {
+      event.preventDefault()
+      event.stopPropagation()
+      stepZoom('out')
+      return
+    }
+    if (!event.altKey && (key === '0' || event.code === 'Numpad0')) {
+      event.preventDefault()
+      event.stopPropagation()
+      changeZoom(1)
+      return
+    }
     if (key === 'f') {
       event.preventDefault()
       event.stopPropagation()
@@ -212,7 +249,7 @@ export function App() {
         applySnapshot(session.undo())
       }
     }
-  }, [applySnapshot])
+  }, [applySnapshot, changeZoom, stepZoom])
   useEffect(() => {
     const listener = (event: KeyboardEvent) => handleEditorKeyboard(event as unknown as React.KeyboardEvent)
     window.addEventListener('keydown', listener, true)
@@ -270,7 +307,10 @@ export function App() {
       {findOpen && <FindReplace onFind={(query) => editorRef.current?.findNext(query) ?? false} onReplace={(query, replacement) => editorRef.current?.replaceCurrent(query, replacement) ?? false} onReplaceAll={(query, replacement) => editorRef.current?.replaceAll(query, replacement) ?? 0} onClose={() => setFindOpen(false)} />}
       {outlineOpen && <DocumentOutline headings={headings} onSelect={(heading) => { if (mode === 'source') editorRef.current?.goToSourceOffset(heading.offset); else editorRef.current?.findNext(heading.text); setOutlineOpen(false) }} onClose={() => setOutlineOpen(false)} />}
 
-      {settings.showStatusBar && <footer className="status-bar"><span>{source.length} 字符{mode === 'source' ? ` · 第 ${cursorLine} 行，第 ${cursorColumn} 列` : ''}</span><span>{dirty ? '未保存' : '已保存于本机'}{' · CommonMark + GFM · 100%'}</span></footer>}
+      {settings.showStatusBar && <footer className="status-bar">
+        <span className="status-text">{source.length} 字符{mode === 'source' ? ` · 第 ${cursorLine} 行，第 ${cursorColumn} 列` : ''}</span>
+        <div className="status-details"><span className="status-summary">{dirty ? '未保存' : '已保存于本机'}{' · CommonMark + GFM'}</span><ZoomControl factor={zoomFactor} onChange={changeZoom} onStep={stepZoom} /></div>
+      </footer>}
       {errorMessage && <div className="save-error" role="alert">{errorMessage}<button type="button" onClick={() => setErrorMessage(null)}>关闭</button></div>}
       {settingsDialog}
 

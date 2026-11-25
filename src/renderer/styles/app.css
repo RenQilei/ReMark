@@ -28,7 +28,16 @@ button:focus-visible, select:focus-visible, textarea:focus-visible, input:focus-
 .mode-switch button { height: 25px; padding: 0 9px; border: 0; border-radius: 5px; background: transparent; color: var(--muted); font-size: 11px; white-space: nowrap; }
 .mode-switch button.active { color: var(--ink); background: var(--control); box-shadow: 0 1px 3px var(--shadow); }
 .editor-surface { flex: 1; min-height: 0; overflow: auto; background: var(--paper); }
-.status-bar { height: 25px; flex: none; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; border-top: 1px solid var(--line); background: var(--chrome); color: var(--muted); font-size: 10px; user-select: none; }
+.status-bar { height: 36px; flex: none; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 0 10px; border-top: 1px solid var(--line); background: var(--chrome); color: var(--muted); font-size: 11px; user-select: none; }
+.status-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.status-details { display: flex; flex: none; align-items: center; gap: 12px; }
+.status-summary { white-space: nowrap; }
+.zoom-control { display: flex; flex: none; align-items: center; gap: 4px; }
+.zoom-button { width: 26px; height: 26px; }
+.zoom-select { width: 68px; height: 26px; padding: 0 4px; border: 1px solid var(--line); border-radius: 6px; color: var(--text); background: var(--control); font-size: 11px; }
+@media (max-width: 800px) {
+  .status-summary { display: none; }
+}
 .source-editor { width: 100%; height: 100%; resize: none; display: block; padding: 36px max(36px, calc((100% - var(--document-width)) / 2)); border: 0; outline: 0; color: var(--ink); background: var(--paper); font: 13px/1.75 ui-monospace, SFMono-Regular, Menlo, Monaco, monospace; tab-size: 2; }
 .source-editor:focus-visible { outline: 0; }
 .empty-shell { position: relative; background: var(--chrome); }
