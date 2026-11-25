@@ -2,6 +2,26 @@
 
 All notable changes to Remark are documented here. Versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.1.0-alpha.3] - 2026-11-25
+
+### Added
+
+- Added per-document page zoom with keyboard shortcuts, common percentage presets, minus/plus controls, and a taller status bar. Zoom remains independent across tabs.
+
+### Fixed
+
+- Rendered Chinese and multiline Mermaid labels as native SVG text while preserving strict sanitization.
+- Prevented editor normalization and selection updates from marking untouched documents as modified.
+- Restored the clean native state after undoing back to the initial or saved version, while preserving unsaved-close protection.
+- Quit after the last clean document window closes instead of leaving Remark running in the Dock.
+
+### Changed
+
+- Replaced the deprecated Mermaid diagram plugin with a maintained local adapter and on-demand renderer loading.
+- Avoided repeated full-file reads and hashing for unchanged files during external-change monitoring.
+- Removed duplicated runtime dependencies from the application archive, reducing ASAR from 302,186,271 bytes to 16,820,351 bytes while keeping technical-document editing functional.
+- Kept cold-start time comparable to the previous build and reduced idle memory in the local benchmark.
+
 ## [0.1.0-alpha.2] - 2026-11-25
 
 ### Fixed

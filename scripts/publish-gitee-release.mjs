@@ -2,7 +2,7 @@ import { readdir, readFile } from 'node:fs/promises'
 import path from 'node:path'
 
 const apply = process.argv.includes('--apply')
-const tag = process.env.TAG ?? `v${process.env.npm_package_version ?? '0.1.0-alpha.2'}`
+const tag = process.env.TAG ?? `v${process.env.npm_package_version ?? '0.1.0-alpha.3'}`
 const releaseDirectory = path.resolve('release')
 const assets = (await readdir(releaseDirectory)).filter((file) => file.endsWith('.dmg') || file === 'SHA256SUMS.txt').sort()
 if (!apply) {

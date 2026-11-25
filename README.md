@@ -55,6 +55,8 @@ Every entry should end with `OK`.
 - **Switch to source:** Choose **源码 / Source** to edit the exact Markdown text. Unsaved content follows you between modes.
 - **Save:** Press `⌘S`. Use `⇧⌘S` for Save As. Manual save is the default; automatic save is optional.
 - **Work with multiple files:** Files open in native macOS tabs by default. Use the Window menu or native tab gestures to move a tab into its own window or merge windows.
+- **Zoom the page:** Use `⌘+` / `⌘-` to change zoom, `⌘0` to reset, or the minus, percentage, and plus controls at the bottom-right. Each document tab zooms independently.
+- **Close documents:** Closing the last document window also quits Remark on macOS. Documents with real unsaved edits still ask for confirmation first.
 
 | Action | Shortcut |
 | --- | --- |
@@ -66,6 +68,8 @@ Every entry should end with `OK`.
 | Find and replace | `⌘F` |
 | Undo | `⌘Z` |
 | Redo | `⇧⌘Z` |
+| Zoom in / out | `⌘+` / `⌘-` |
+| Reset zoom | `⌘0` |
 | Settings | `⌘,` |
 
 ## Features
