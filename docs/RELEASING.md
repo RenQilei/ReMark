@@ -4,7 +4,7 @@ This guide is for maintainers. User installation and source-build instructions b
 
 ## Repository bootstrap
 
-The first public release tag is `v0.1.0-alpha.0`. The responsive toolbar fix is released as `v0.1.0-alpha.1`, and the editor, table, and native-tab fixes are released as `v0.1.0-alpha.2`. The Mermaid, zoom, clean-state, and packaging improvements are released as `v0.1.0-alpha.3`. Before configuring remotes, confirm the GitHub and Gitee repository URLs, public visibility, and the initial public branch. The intended branch is `main`; do not rename or push the current working branch without confirmation.
+The first public release tag is `v0.1.0-alpha.0`. The responsive toolbar fix is released as `v0.1.0-alpha.1`, and the editor, table, and native-tab fixes are released as `v0.1.0-alpha.2`. The Mermaid, zoom, clean-state, and packaging improvements are released as `v0.1.0-alpha.3`. The zoom repair, global-settings clarification, Preview naming, and ReMark branding are released as `v0.1.0-alpha.4`. Before configuring remotes, confirm the GitHub and Gitee repository URLs, public visibility, and the initial public branch. The intended branch is `main`; do not rename or push the current working branch without confirmation.
 
 `scripts/setup-remotes.mjs` validates repository URLs, refuses credential-bearing URLs and existing remote replacement, and performs no changes by default:
 
@@ -95,17 +95,17 @@ Never present `<version>` or a filename pattern as a clickable download URL. Pub
 Current GitHub asset links use this form:
 
 ```text
-https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.3/ReMark-0.1.0-alpha.3-unsigned-arm64.dmg
-https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.3/ReMark-0.1.0-alpha.3-unsigned-x64.dmg
-https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.3/SHA256SUMS.txt
+https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.4/ReMark-0.1.0-alpha.4-unsigned-arm64.dmg
+https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.4/ReMark-0.1.0-alpha.4-unsigned-x64.dmg
+https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.4/SHA256SUMS.txt
 ```
 
 A Gitee repository and tag can exist without any Gitee Release. There is no valid direct file download until a Release and its attachments have been created. Gitee binary Releases are currently paused because each DMG exceeds the ordinary repository attachment limit. The following URLs are examples for a future completed upload, not currently available downloads:
 
 ```text
-https://gitee.com/renqilei/remark/releases/download/v0.1.0-alpha.3/ReMark-0.1.0-alpha.3-unsigned-arm64.dmg
-https://gitee.com/renqilei/remark/releases/download/v0.1.0-alpha.3/ReMark-0.1.0-alpha.3-unsigned-x64.dmg
-https://gitee.com/renqilei/remark/releases/download/v0.1.0-alpha.3/SHA256SUMS.txt
+https://gitee.com/renqilei/remark/releases/download/v0.1.0-alpha.4/ReMark-0.1.0-alpha.4-unsigned-arm64.dmg
+https://gitee.com/renqilei/remark/releases/download/v0.1.0-alpha.4/ReMark-0.1.0-alpha.4-unsigned-x64.dmg
+https://gitee.com/renqilei/remark/releases/download/v0.1.0-alpha.4/SHA256SUMS.txt
 ```
 
 To create the current Gitee Release locally:
@@ -118,7 +118,7 @@ To create the current Gitee Release locally:
    export GITEE_REPO=remark
    export GITEE_REMOTE=https://gitee.com/renqilei/remark.git
    export GITEE_PUBLISH=true
-   export TAG=v0.1.0-alpha.3
+   export TAG=v0.1.0-alpha.4
    export PRERELEASE=true
    ```
 

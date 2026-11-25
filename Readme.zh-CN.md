@@ -27,8 +27,8 @@ ReMark 直接打开本地 Markdown 文件，不需要 Vault、工作区导入、
 
 | 你的 Mac | 安装包 |
 | --- | --- |
-| Apple Silicon（M1 及更新芯片） | [下载 Apple Silicon 版 ReMark](https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.3/ReMark-0.1.0-alpha.3-unsigned-arm64.dmg) |
-| Intel | [下载 Intel 版 ReMark](https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.3/ReMark-0.1.0-alpha.3-unsigned-x64.dmg) |
+| Apple Silicon（M1 及更新芯片） | [下载 Apple Silicon 版 ReMark](https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.4/ReMark-0.1.0-alpha.4-unsigned-arm64.dmg) |
+| Intel | [下载 Intel 版 ReMark](https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.4/ReMark-0.1.0-alpha.4-unsigned-x64.dmg) |
 
 1. 点击上方与你的 Mac 匹配的链接，下载并打开 DMG 文件。
 2. 将 **ReMark** 拖入 **应用程序**。
@@ -40,7 +40,7 @@ Gitee 用户可访问 [Gitee Releases 页面](https://gitee.com/renqilei/remark/
 
 ### 校验下载文件
 
-下载 [SHA256SUMS.txt](https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.3/SHA256SUMS.txt)，将它与 DMG 放在同一目录，然后执行：
+下载 [SHA256SUMS.txt](https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.4/SHA256SUMS.txt)，将它与 DMG 放在同一目录，然后执行：
 
 ```bash
 shasum -a 256 -c SHA256SUMS.txt
