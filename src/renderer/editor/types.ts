@@ -20,5 +20,6 @@ export interface EditorComponentProps {
   initialMarkdown: string
   initialAnchor: EditorAnchor | null
   initialViewportAnchor: EditorAnchor | null
+  onBaselineReady?(markdown: string, anchor: EditorAnchor): void
   onChange(markdown: string, anchor: EditorAnchor): void
 }

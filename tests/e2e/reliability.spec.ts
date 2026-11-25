@@ -2,6 +2,15 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import { _electron as electron, expect, test } from '@playwright/test'
+import type { ElectronApplication } from '@playwright/test'
+
+async function stop(app: ElectronApplication): Promise<void> {
+  const child = app.process()
+  if (child.exitCode !== null) return
+  const exited = new Promise<void>((resolve) => child.once('exit', () => resolve()))
+  child.kill('SIGKILL')
+  await exited
+}
 
 async function launch(markdown: string) {
   const directory = await mkdtemp(path.join(tmpdir(), 'remark-e2e-reliability-'))
@@ -29,7 +38,7 @@ test('keeps content through 50 unsaved mode switches', async () => {
       await expect(window.getByRole('textbox', { name: 'Markdown 源码' })).toContainText('# Persistent')
     }
   } finally {
-    app.process().kill('SIGKILL')
+    await stop(app)
     await rm(directory, { recursive: true, force: true })
   }
 })
@@ -55,7 +64,7 @@ test('opens a one-megabyte technical document within the performance budget', as
     await window.getByRole('button', { name: '所见即所得', exact: true }).click()
     await expect(window.locator('.milkdown-host')).toHaveAttribute('data-ready', 'true')
   } finally {
-    app.process().kill('SIGKILL')
+    await stop(app)
     await rm(directory, { recursive: true, force: true })
   }
 })

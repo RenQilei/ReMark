@@ -130,7 +130,7 @@ export class DocumentService {
     return opened
   }
 
-  async writeRecovery(windowId: number, input: { markdown: string; savedMarkdown: string; mode: EditorMode }): Promise<void> {
+  async writeRecovery(windowId: number, input: { markdown: string; savedMarkdown: string; mode: EditorMode; dirty: boolean }): Promise<void> {
     const state = this.requireState(windowId)
     const snapshot: RecoverySnapshot = {
       id: state.recoveryId,
@@ -140,7 +140,7 @@ export class DocumentService {
       mode: input.mode,
       savedAt: Date.now(),
     }
-    state.dirty = input.markdown !== input.savedMarkdown
+    state.dirty = input.dirty
     if (state.dirty) await this.recovery.save(snapshot)
     else await this.recovery.clear(state.recoveryId)
   }

@@ -25,6 +25,7 @@ export interface DocumentSession {
   isDirty(): boolean
   updateVisual(markdown: string, anchor: EditorAnchor): void
   updateSource(markdown: string, anchor: EditorAnchor): void
+  adoptCleanVisualBaseline(markdown: string, anchor: EditorAnchor): DocumentSnapshot
   switchMode(mode: EditorMode, viewportAnchor?: EditorAnchor | null): DocumentSnapshot
   undoDepth(): number
   redoDepth(): number
@@ -43,6 +44,7 @@ function copySnapshot(snapshot: DocumentSnapshot): DocumentSnapshot {
 
 export class MarkdownDocumentSession implements DocumentSession {
   private snapshot: DocumentSnapshot
+  private cleanVisualMarkdown: string | null = null
   private readonly undoStack: DocumentSnapshot[] = []
   private readonly redoStack: DocumentSnapshot[] = []
 
@@ -55,7 +57,7 @@ export class MarkdownDocumentSession implements DocumentSession {
   }
 
   isDirty(): boolean {
-    return this.snapshot.markdown !== this.snapshot.savedMarkdown
+    return this.snapshot.markdown !== this.snapshot.savedMarkdown && this.snapshot.markdown !== this.cleanVisualMarkdown
   }
 
   updateVisual(markdown: string, anchor: EditorAnchor): void {
@@ -64,6 +66,14 @@ export class MarkdownDocumentSession implements DocumentSession {
 
   updateSource(markdown: string, anchor: EditorAnchor): void {
     this.update(markdown, anchor)
+  }
+
+  adoptCleanVisualBaseline(markdown: string, anchor: EditorAnchor): DocumentSnapshot {
+    if (!this.isDirty()) {
+      this.cleanVisualMarkdown = markdown
+      this.snapshot = { ...this.snapshot, markdown, anchor: { ...anchor } }
+    }
+    return this.getSnapshot()
   }
 
   switchMode(mode: EditorMode, viewportAnchor?: EditorAnchor | null): DocumentSnapshot {
@@ -105,6 +115,7 @@ export class MarkdownDocumentSession implements DocumentSession {
 
   markSaved(markdown: string): void {
     this.snapshot.savedMarkdown = markdown
+    this.cleanVisualMarkdown = markdown
   }
 
   private update(markdown: string, anchor: EditorAnchor): void {

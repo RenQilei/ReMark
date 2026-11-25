@@ -44,16 +44,18 @@ function blockElements(view: EditorView): (HTMLElement | null)[] {
   return elements
 }
 
-export const VisualEditor = forwardRef<EditorController, VisualEditorProps>(function VisualEditor({ documentId, initialMarkdown, initialAnchor, initialViewportAnchor, onChange }, ref) {
+export const VisualEditor = forwardRef<EditorController, VisualEditorProps>(function VisualEditor({ documentId, initialMarkdown, initialAnchor, initialViewportAnchor, onBaselineReady, onChange }, ref) {
   const containerRef = useRef<HTMLDivElement>(null)
   const viewRef = useRef<EditorView | null>(null)
   const crepeRef = useRef<Crepe | null>(null)
   const onChangeRef = useRef(onChange)
+  const onBaselineReadyRef = useRef(onBaselineReady)
   const initialMarkdownRef = useRef(initialMarkdown)
   const initialAnchorRef = useRef(initialAnchor)
   const initialViewportAnchorRef = useRef(initialViewportAnchor)
 
   useEffect(() => { onChangeRef.current = onChange }, [onChange])
+  useEffect(() => { onBaselineReadyRef.current = onBaselineReady }, [onBaselineReady])
   useImperativeHandle(ref, () => ({
     getMarkdown: () => {
       const markdown = crepeRef.current?.getMarkdown()
@@ -152,25 +154,21 @@ export const VisualEditor = forwardRef<EditorController, VisualEditorProps>(func
   useEffect(() => {
     if (!containerRef.current) return
     let disposed = false
+    let lastMarkdown: string | null = null
     const crepe = new Crepe({ root: containerRef.current, defaultValue: externalizeAssetUrls(initialMarkdownRef.current, documentId) })
     crepeRef.current = crepe
+    const notifyEditorUpdate = () => {
+      if (disposed || !viewRef.current || lastMarkdown === null) return
+      const markdown = restoreAssetUrls(crepe.getMarkdown(), documentId)
+      const offset = viewRef.current.state.doc.textBetween(0, viewRef.current.state.selection.from, '\n', '\n').length
+      lastMarkdown = markdown
+      onChangeRef.current(markdown, anchorAtSourceOffset(markdown, Math.min(markdown.length, offset), 'visual'))
+    }
     crepe.on((listener) => {
-      listener.markdownUpdated((_ctx, markdown, previous) => {
-        if (disposed) return
-        const restored = restoreAssetUrls(markdown, documentId)
-        if (restored === restoreAssetUrls(previous, documentId)) return
-        const view = viewRef.current
-        const offset = view ? view.state.doc.textBetween(0, view.state.selection.from, '\n', '\n').length : 0
-        onChangeRef.current(restored, anchorAtSourceOffset(restored, Math.min(restored.length, offset), 'visual'))
-      })
+      listener.markdownUpdated(() => { notifyEditorUpdate() })
     })
     crepe.on((listener) => {
-      listener.updated(() => {
-        if (disposed || !viewRef.current) return
-        const markdown = crepe.getMarkdown()
-        const offset = viewRef.current.state.doc.textBetween(0, viewRef.current.state.selection.from, '\n', '\n').length
-        onChangeRef.current(restoreAssetUrls(markdown, documentId), anchorAtSourceOffset(restoreAssetUrls(markdown, documentId), Math.min(markdown.length, offset), 'visual'))
-      })
+      listener.updated(() => { notifyEditorUpdate() })
     })
     crepe.editor.use(diagramSyntax).use(mermaidNodeViewPlugin).use(sanitizedHtmlNodeViewPlugin)
     void crepe.create().then(() => {
@@ -178,6 +176,8 @@ export const VisualEditor = forwardRef<EditorController, VisualEditorProps>(func
       const view = crepe.editor.action((ctx) => ctx.get(editorViewCtx))
       viewRef.current = view
       view.dom.setAttribute('aria-label', '所见即所得编辑器')
+      lastMarkdown = restoreAssetUrls(crepe.getMarkdown(), documentId)
+      onBaselineReadyRef.current?.(lastMarkdown, anchorAtSourceOffset(lastMarkdown, 0, 'visual'))
       const selectionAnchor = initialAnchorRef.current
       if (selectionAnchor?.blockPath) {
         const match = /^root\.children\.(\d+)$/.exec(selectionAnchor.blockPath)

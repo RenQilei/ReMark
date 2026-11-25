@@ -24,7 +24,7 @@ export interface RemarkAPI {
   saveDocumentAs(markdown: string): Promise<OpenedFile | null>
   acceptExternal(opened: OpenedFile): Promise<void>
   setDirty(dirty: boolean): Promise<void>
-  writeRecovery(input: { markdown: string; savedMarkdown: string; mode: EditorMode }): Promise<void>
+  writeRecovery(input: { markdown: string; savedMarkdown: string; mode: EditorMode; dirty: boolean }): Promise<void>
   closeWindow(discard: boolean): Promise<void>
   getZoomFactor(): Promise<number>
   setZoomFactor(factor: number): Promise<number>

@@ -74,4 +74,35 @@ describe('MarkdownDocumentSession', () => {
     session.switchMode('source')
     expect(session.redoDepth()).toBe(0)
   })
+
+  it('keeps clean when an untouched editor normalizes Markdown and when undo returns to it', () => {
+    const disk = '# Title\n\n\nParagraph.\n'
+    const visual = '# Title\n\nParagraph.\n'
+    const session = new MarkdownDocumentSession('/tmp/a.md', disk, 'visual', disk)
+    session.adoptCleanVisualBaseline(visual, anchor())
+    expect(session.isDirty()).toBe(false)
+    expect(session.getSnapshot().savedMarkdown).toBe(disk)
+    session.updateVisual(`${visual}\nEdited.`, anchor())
+    expect(session.isDirty()).toBe(true)
+    session.updateVisual(visual, anchor())
+    expect(session.isDirty()).toBe(false)
+  })
+
+  it('does not adopt a clean visual baseline over unsaved edits', () => {
+    const session = new MarkdownDocumentSession(null, '# Original\n', 'visual')
+    session.updateVisual('# Changed\n', anchor())
+    session.adoptCleanVisualBaseline('# Original\n', anchor())
+    expect(session.isDirty()).toBe(true)
+    expect(session.getSnapshot().markdown).toBe('# Changed\n')
+  })
+
+  it('moves the clean visual baseline forward only after a successful save', () => {
+    const session = new MarkdownDocumentSession(null, '# Original\n', 'visual')
+    session.adoptCleanVisualBaseline('# Original\n', anchor())
+    session.updateVisual('# Saved\n', anchor())
+    session.markSaved('# Saved\n')
+    expect(session.isDirty()).toBe(false)
+    session.updateVisual('# Original\n', anchor())
+    expect(session.isDirty()).toBe(true)
+  })
 })

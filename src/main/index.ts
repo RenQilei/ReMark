@@ -122,7 +122,7 @@ app.on('open-file', (event, filePath) => {
 })
 app.on('new-window-for-tab', () => addWindowForCurrentPreference(createDocumentWindow(null, true)))
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit()
+  app.quit()
 })
 app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) createDocumentWindow()
@@ -184,7 +184,7 @@ if (hasSingleInstanceLock) void app.whenReady().then(async () => {
   })
   ipcMain.handle('document:accept-external', (event, opened: OpenedFile) => documents.acceptExternal(senderWindowId(event), opened))
   ipcMain.handle('document:dirty', (event, dirty: boolean) => documents.setDirty(senderWindowId(event), dirty))
-  ipcMain.handle('document:recovery', (event, input: { markdown: string; savedMarkdown: string; mode: EditorMode }) => documents.writeRecovery(senderWindowId(event), input))
+  ipcMain.handle('document:recovery', (event, input: { markdown: string; savedMarkdown: string; mode: EditorMode; dirty: boolean }) => documents.writeRecovery(senderWindowId(event), input))
   ipcMain.handle('document:close', (event, discard: boolean) => documents.close(senderWindowId(event), discard))
 
   const initialFilePath = pendingFile

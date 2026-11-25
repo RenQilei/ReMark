@@ -45,7 +45,8 @@ export function App() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [systemDark, setSystemDark] = useState(() => window.matchMedia('(prefers-color-scheme: dark)').matches)
   const [zoomFactor, setZoomFactor] = useState(1)
-  const dirty = source !== savedSource
+  const [visualBaseline, setVisualBaseline] = useState<string | null>(null)
+  const dirty = source !== savedSource && source !== visualBaseline
   const hasDocument = Boolean(bootstrap && (bootstrap.demo || bootstrap.isNew || bootstrap.filePath || bootstrap.recovery))
 
   useEffect(() => {
@@ -96,6 +97,7 @@ export function App() {
       const opened = await window.remark.saveDocument(markdownToSave)
       if (opened) {
         sessionRef.current?.markSaved(markdownToSave)
+        setVisualBaseline(markdownToSave)
         setSource(markdownToSave)
         setFileState(opened)
         setSavedSource(markdownToSave)
@@ -116,6 +118,7 @@ export function App() {
       const opened = await window.remark.saveDocumentAs(markdownToSave)
       if (opened) {
         sessionRef.current?.markSaved(markdownToSave)
+        setVisualBaseline(markdownToSave)
         setSource(markdownToSave)
         setFileState(opened)
         setSavedSource(markdownToSave)
@@ -136,6 +139,7 @@ export function App() {
     else {
       void window.remark.acceptExternal(opened).then(() => {
         sessionRef.current = new MarkdownDocumentSession(opened.filePath, opened.markdown, mode)
+        setVisualBaseline(null)
         setFileState(opened)
         setSource(opened.markdown)
         setSavedSource(opened.markdown)
@@ -154,7 +158,7 @@ export function App() {
     if (!hasDocument) return
     void window.remark.setDirty(dirty)
     const timer = window.setTimeout(() => {
-      void window.remark.writeRecovery({ markdown: source, savedMarkdown: savedSource, mode })
+      void window.remark.writeRecovery({ markdown: source, savedMarkdown: savedSource, mode, dirty })
     }, 800)
     return () => window.clearTimeout(timer)
   }, [dirty, hasDocument, mode, savedSource, source])
@@ -163,6 +167,7 @@ export function App() {
     if (!externalChange) return
     void window.remark.acceptExternal(externalChange).then(() => {
       sessionRef.current = new MarkdownDocumentSession(externalChange.filePath, externalChange.markdown, mode)
+      setVisualBaseline(null)
       setFileState(externalChange)
       setSource(externalChange.markdown)
       setSavedSource(externalChange.markdown)
@@ -190,6 +195,14 @@ export function App() {
     setSource(markdown)
     setAnchor(nextAnchor)
   }, [mode])
+  const handleVisualBaseline = useCallback((markdown: string, nextAnchor: EditorAnchor) => {
+    if (sessionRef.current?.isDirty()) return
+    const snapshot = sessionRef.current?.adoptCleanVisualBaseline(markdown, nextAnchor)
+    if (!snapshot) return
+    setVisualBaseline(markdown)
+    setSource(snapshot.markdown)
+    setAnchor(snapshot.anchor)
+  }, [])
   const applySnapshot = useCallback((snapshot: DocumentSnapshot) => {
     setSource(snapshot.markdown)
     setMode(snapshot.mode)
@@ -301,7 +314,7 @@ export function App() {
       </header>
 
       <main className={`editor-surface ${mode === 'source' ? 'source-mode' : ''}`}>
-        <EditorHost ref={editorRef} documentId={bootstrap?.windowId ?? -1} mode={mode} markdown={source} anchor={anchor} viewportAnchor={viewportAnchor} epoch={epoch} onChange={handleEditorChange} />
+        <EditorHost ref={editorRef} documentId={bootstrap?.windowId ?? -1} mode={mode} markdown={source} anchor={anchor} viewportAnchor={viewportAnchor} onBaselineReady={handleVisualBaseline} epoch={epoch} onChange={handleEditorChange} />
       </main>
 
       {findOpen && <FindReplace onFind={(query) => editorRef.current?.findNext(query) ?? false} onReplace={(query, replacement) => editorRef.current?.replaceCurrent(query, replacement) ?? false} onReplaceAll={(query, replacement) => editorRef.current?.replaceAll(query, replacement) ?? 0} onClose={() => setFindOpen(false)} />}

@@ -149,3 +149,36 @@ test('does not send document commands to another window when none is focused', a
     await rm(directory, { recursive: true, force: true })
   }
 })
+
+
+test('quits after all clean document windows are closed', async () => {
+  const directory = await mkdtemp(path.join(tmpdir(), 'remark-e2e-close-all-'))
+  const firstFile = path.join(directory, 'first.md')
+  const secondFile = path.join(directory, 'second.md')
+  await writeFile(firstFile, '# First\n')
+  await writeFile(secondFile, '# Second\n')
+  const app = await electron.launch({
+    args: ['out/main/index.js', firstFile],
+    env: { ...process.env, REMARK_TEST_MODE: '1', REMARK_USER_DATA_DIR: path.join(directory, 'user-data') },
+  })
+
+  try {
+    await app.firstWindow()
+    await app.evaluate(({ app: electronApp }, filePath) => {
+      electronApp.emit('open-file', { preventDefault() {} }, filePath)
+    }, secondFile)
+    await expect.poll(() => app.windows().length).toBe(2)
+    const child = app.process()
+    await app.evaluate(({ BrowserWindow }) => {
+      for (const window of BrowserWindow.getAllWindows()) window.close()
+    })
+    await expect.poll(() => child.exitCode).toBe(0)
+  } finally {
+    try {
+      app.process().kill('SIGKILL')
+    } catch {
+      // The application has already exited.
+    }
+    await rm(directory, { recursive: true, force: true })
+  }
+})
