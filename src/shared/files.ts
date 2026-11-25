@@ -6,6 +6,7 @@ export interface OpenedFile {
   hash: string
   eol: LineEnding
   bom: boolean
+  fingerprint: string
 }
 
 export interface SaveDocumentRequest {
@@ -18,4 +19,5 @@ export interface SaveDocumentRequest {
 
 export interface SaveDocumentResult {
   hash: string
+  fingerprint: string
 }

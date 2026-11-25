@@ -1,7 +1,12 @@
 import { mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+
+vi.mock('node:fs/promises', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('node:fs/promises')>()
+  return { ...actual, readFile: vi.fn(actual.readFile) }
+})
 import { FileService } from '../../src/main/file-service'
 
 const directories: string[] = []
@@ -14,6 +19,7 @@ async function temporaryDirectory(): Promise<string> {
 }
 
 afterEach(async () => {
+  vi.clearAllMocks()
   await Promise.all(directories.splice(0).map((directory) => rm(directory, { recursive: true, force: true })))
 })
 
@@ -27,6 +33,24 @@ describe('FileService', () => {
     expect(opened.markdown).toBe('# Hello\n\nWorld\n')
     expect(opened.bom).toBe(true)
     expect(opened.eol).toBe('crlf')
+  })
+
+  it('skips full reads when the fingerprint is unchanged and reopens after a change', async () => {
+    const directory = await temporaryDirectory()
+    const filePath = path.join(directory, 'notes.md')
+    await writeFile(filePath, '# Original\n')
+    const opened = await service.open(filePath)
+    expect(opened.fingerprint).toBeTypeOf('string')
+
+    const readFileMock = vi.mocked(readFile)
+    readFileMock.mockClear()
+    expect(await service.openIfChanged(filePath, opened.fingerprint)).toBeNull()
+    expect(readFileMock).not.toHaveBeenCalled()
+
+    await writeFile(filePath, '# Changed\n')
+    const changed = await service.openIfChanged(filePath, opened.fingerprint)
+    expect(changed?.markdown).toBe('# Changed\n')
+    expect(changed?.fingerprint).not.toBe(opened.fingerprint)
   })
 
   it('atomically saves with the original encoding and file permissions', async () => {

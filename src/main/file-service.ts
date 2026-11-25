@@ -16,6 +16,11 @@ function digest(bytes: Buffer): string {
   return createHash('sha256').update(bytes).digest('hex')
 }
 
+async function fileFingerprint(filePath: string): Promise<string> {
+  const metadata = await stat(filePath, { bigint: true })
+  return `${metadata.size}:${metadata.mtimeNs}:${metadata.ctimeNs}`
+}
+
 function translateError(error: unknown): FileServiceError {
   if (error instanceof FileServiceError) return error
   const code = (error as NodeJS.ErrnoException)?.code
@@ -28,8 +33,15 @@ function translateError(error: unknown): FileServiceError {
 export class FileService {
   async open(filePath: string): Promise<OpenedFile> {
     let bytes: Buffer
+    let fingerprint: string
     try {
+      fingerprint = await fileFingerprint(filePath)
       bytes = await readFile(filePath)
+      const latestFingerprint = await fileFingerprint(filePath)
+      if (fingerprint !== latestFingerprint) {
+        bytes = await readFile(filePath)
+        fingerprint = await fileFingerprint(filePath)
+      }
     } catch (error) {
       throw translateError(error)
     }
@@ -48,6 +60,16 @@ export class FileService {
       hash: digest(bytes),
       eol: crlfCount > lfCount ? 'crlf' : 'lf',
       bom,
+      fingerprint,
+    }
+  }
+
+  async openIfChanged(filePath: string, previousFingerprint: string | null): Promise<OpenedFile | null> {
+    try {
+      if (previousFingerprint && await fileFingerprint(filePath) === previousFingerprint) return null
+      return await this.open(filePath)
+    } catch (error) {
+      throw translateError(error)
     }
   }
 
@@ -86,7 +108,7 @@ export class FileService {
       await handle.close()
       handle = undefined
       await rename(temporaryPath, filePath)
-      return { hash: digest(bytes) }
+      return { hash: digest(bytes), fingerprint: await fileFingerprint(filePath) }
     } catch (error) {
       if (handle) await handle.close().catch(() => undefined)
       await unlink(temporaryPath).catch(() => undefined)

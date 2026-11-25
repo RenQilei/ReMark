@@ -102,7 +102,7 @@ export class DocumentService {
       eol: state.opened.eol,
       bom: state.opened.bom,
     })
-    state.opened = { ...state.opened, markdown, hash: result.hash }
+    state.opened = { ...state.opened, markdown, hash: result.hash, fingerprint: result.fingerprint }
     state.lastExternalHash = result.hash
     this.setDirty(windowId, false)
     await this.recovery.clear(state.recoveryId)
@@ -254,8 +254,12 @@ export class DocumentService {
   private async notifyExternalChange(state: DocumentState, filePath: string): Promise<void> {
     if (state.filePath !== filePath) return
     try {
-      const opened = await this.files.open(filePath)
-      if (opened.hash === state.opened?.hash || opened.hash === state.lastExternalHash) return
+      const opened = await this.files.openIfChanged(filePath, state.opened?.fingerprint ?? null)
+      if (!opened) return
+      if (opened.hash === state.opened?.hash || opened.hash === state.lastExternalHash) {
+        state.opened = opened
+        return
+      }
       state.lastExternalHash = opened.hash
       if (!state.window.isDestroyed()) state.window.webContents.send('document:external-change', opened)
     } catch {
