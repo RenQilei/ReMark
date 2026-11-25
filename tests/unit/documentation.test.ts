@@ -24,9 +24,9 @@ describe('public documentation', () => {
 
   it('documents both architectures and checksum verification without local paths', () => {
     for (const content of [english, chinese]) {
-      expect(content).toContain('https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.2/Remark-0.1.0-alpha.2-unsigned-arm64.dmg')
-      expect(content).toContain('https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.2/Remark-0.1.0-alpha.2-unsigned-x64.dmg')
-      expect(content).toContain('https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.2/SHA256SUMS.txt')
+      expect(content).toContain('https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.3/Remark-0.1.0-alpha.3-unsigned-arm64.dmg')
+      expect(content).toContain('https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.3/Remark-0.1.0-alpha.3-unsigned-x64.dmg')
+      expect(content).toContain('https://github.com/RenQilei/ReMark/releases/download/v0.1.0-alpha.3/SHA256SUMS.txt')
       expect(content).toContain('https://gitee.com/renqilei/remark/releases')
       expect(content).toContain('shasum -a 256 -c SHA256SUMS.txt')
       expect(content).not.toContain('/Users/')
