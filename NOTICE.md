@@ -16,4 +16,4 @@ Remark is licensed under GPL-3.0-only. The application bundles third-party packa
 
 The corresponding license texts are included in the packages distributed with the application. Exact dependency versions are recorded in `package-lock.json`.
 
-`@milkdown/plugin-diagram` is currently marked deprecated by its publisher. It is pinned and covered by the project's Mermaid rendering tests; replacing it with a maintained schema adapter is a maintenance priority.
+Mermaid uses a maintained local schema adapter. Its renderer is loaded on demand and labels use native SVG text with strict sanitization.

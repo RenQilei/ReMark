@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, expect, it } from 'vitest'
-import { isSafeExternalUrl, sanitizeHtml } from '../../src/renderer/editor/markdown/sanitize'
+import { isSafeExternalUrl, sanitizeHtml, sanitizeSvg } from '../../src/renderer/editor/markdown/sanitize'
 
 describe('HTML sanitization', () => {
   it('removes executable elements, event handlers and unsafe URLs', () => {
@@ -17,5 +17,12 @@ describe('HTML sanitization', () => {
     expect(isSafeExternalUrl('mailto:user@example.com')).toBe(true)
     expect(isSafeExternalUrl('javascript:alert(1)')).toBe(false)
     expect(isSafeExternalUrl('file:///etc/passwd')).toBe(false)
+  })
+
+  it('preserves native SVG text while rejecting HTML and executable content', () => {
+    const result = sanitizeSvg('<svg><text>用户触点</text><foreignObject><div>HTML label</div></foreignObject><script>alert(1)</script></svg>')
+    expect(result).toContain('<text>用户触点</text>')
+    expect(result).not.toContain('foreignObject')
+    expect(result).not.toContain('<script')
   })
 })

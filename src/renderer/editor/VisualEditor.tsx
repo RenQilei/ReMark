@@ -1,6 +1,6 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
 import { Crepe } from '@milkdown/crepe'
-import { diagram } from '@milkdown/plugin-diagram'
+import { diagramSyntax } from './markdown/diagramSyntax'
 import { editorViewCtx } from '@milkdown/kit/core'
 import { setBlockType, toggleMark, wrapIn } from '@milkdown/kit/prose/commands'
 import { wrapInList } from '@milkdown/kit/prose/schema-list'
@@ -10,7 +10,7 @@ import { insert } from '@milkdown/kit/utils'
 import type { EditorView } from '@milkdown/kit/prose/view'
 import { anchorAtSourceOffset } from './markdown/anchors'
 import { externalizeAssetUrls, restoreAssetUrls } from './markdown/assetUrls'
-import { mermaidNodeViewPlugin, sanitizedHtmlNodeViewPlugin, strictMermaidPlugin } from './markdown/technicalPlugins'
+import { mermaidNodeViewPlugin, sanitizedHtmlNodeViewPlugin } from './markdown/technicalPlugins'
 import type { EditorAction, EditorComponentProps, EditorController } from './types'
 import '@milkdown/crepe/theme/common/style.css'
 
@@ -172,7 +172,7 @@ export const VisualEditor = forwardRef<EditorController, VisualEditorProps>(func
         onChangeRef.current(restoreAssetUrls(markdown, documentId), anchorAtSourceOffset(restoreAssetUrls(markdown, documentId), Math.min(markdown.length, offset), 'visual'))
       })
     })
-    crepe.editor.use(diagram).use(strictMermaidPlugin).use(mermaidNodeViewPlugin).use(sanitizedHtmlNodeViewPlugin)
+    crepe.editor.use(diagramSyntax).use(mermaidNodeViewPlugin).use(sanitizedHtmlNodeViewPlugin)
     void crepe.create().then(() => {
       if (disposed) return
       const view = crepe.editor.action((ctx) => ctx.get(editorViewCtx))

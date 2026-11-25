@@ -55,3 +55,38 @@ test('does not execute malicious HTML or diagram content', async () => {
     await rm(directory, { recursive: true, force: true })
   }
 })
+
+
+test('renders Chinese and multiline Mermaid labels as safe SVG text', async () => {
+  const { app, directory } = await launchFixture('mermaid-labels.md')
+  try {
+    const window = await app.firstWindow()
+    const preview = window.locator('.mermaid-preview')
+    await expect(preview.locator('svg')).toBeVisible({ timeout: 20_000 })
+    await expect(preview).toContainText('用户触点')
+    await expect(preview).toContainText('Flutter App')
+    await expect(preview).toContainText('iOS / Android')
+    await expect(preview).toContainText('鸿蒙：技术验证，不随首发')
+    await expect(preview).toContainText('API 网关')
+    await expect(preview.locator('foreignObject, script')).toHaveCount(0)
+    const emptyNodes = await preview.locator('svg .node').evaluateAll((elements) => elements.filter((element) => !(element.textContent ?? '').trim()).length)
+    expect(emptyNodes).toBe(0)
+
+    await window.getByRole('button', { name: '源码', exact: true }).click()
+    const source = window.getByRole('textbox', { name: 'Markdown 源码' })
+    await expect(source).toContainText('flowchart TB')
+    await expect(source).toContainText('subgraph Client[用户触点]')
+    await expect(source).toContainText('Flutter App<br/>iOS / Android')
+
+    await source.fill('')
+    await window.getByRole('button', { name: '所见即所得', exact: true }).click()
+    await window.locator('.ProseMirror').click()
+    await window.keyboard.type('```mermaid')
+    await expect(window.locator('.mermaid-node')).toHaveCount(1)
+    await window.getByRole('button', { name: '源码', exact: true }).click()
+    await expect(source).toContainText('```mermaid')
+  } finally {
+    app.process().kill('SIGKILL')
+    await rm(directory, { recursive: true, force: true })
+  }
+})

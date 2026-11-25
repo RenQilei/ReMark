@@ -19,6 +19,7 @@
     "dist:mac:unsigned": "npm run build && node scripts/build-dmg.mjs --unsigned",
     "dist:mac:x64": "npm run build && node scripts/build-dmg.mjs --unsigned --x64",
     "smoke:packaged": "node scripts/smoke-packaged.mjs",
+    "benchmark:startup": "node scripts/benchmark-startup.mjs",
     "checksums": "node scripts/checksums.mjs"
   },
   "dependencies": {
@@ -27,7 +28,6 @@
     "@codemirror/search": "^6.7.2",
     "@milkdown/crepe": "^7.23.0",
     "@milkdown/kit": "^7.23.0",
-    "@milkdown/plugin-diagram": "^7.7.0",
     "codemirror": "^6.0.2",
     "dompurify": "^3.5.0",
     "lucide-react": "^1.78.0",

@@ -1,17 +1,25 @@
-import { mermaidConfigCtx } from '@milkdown/plugin-diagram'
 import { nodeViewCtx } from '@milkdown/kit/core'
 import type { MilkdownPlugin } from '@milkdown/kit/ctx'
 import type { NodeViewConstructor } from '@milkdown/kit/prose/view'
-import mermaid from 'mermaid'
 import { sanitizeHtml, sanitizeSvg } from './sanitize'
 
-export const strictMermaidPlugin: MilkdownPlugin = (ctx) => () => {
-  ctx.set(mermaidConfigCtx.key, {
-    securityLevel: 'strict',
-    startOnLoad: false,
-    flowchart: { useMaxWidth: true },
-    sequence: { useMaxWidth: true },
+type Mermaid = typeof import('mermaid').default
+
+let mermaidModule: Promise<Mermaid> | null = null
+
+function loadMermaid(): Promise<Mermaid> {
+  mermaidModule ??= import('mermaid').then((module) => {
+    const mermaid = module.default
+    mermaid.initialize({
+      startOnLoad: false,
+      securityLevel: 'strict',
+      htmlLabels: false,
+      flowchart: { useMaxWidth: true },
+      sequence: { useMaxWidth: true },
+    })
+    return mermaid
   })
+  return mermaidModule
 }
 
 export const sanitizedHtmlNodeViewPlugin: MilkdownPlugin = (ctx) => () => {
@@ -50,7 +58,6 @@ export const sanitizedHtmlNodeViewPlugin: MilkdownPlugin = (ctx) => () => {
 }
 
 let mermaidRenderId = 0
-mermaid.initialize({ startOnLoad: false, securityLevel: 'strict' })
 
 export const mermaidNodeViewPlugin: MilkdownPlugin = (ctx) => () => {
   const nodeViews = ctx.get(nodeViewCtx)
@@ -79,6 +86,7 @@ export const mermaidNodeViewPlugin: MilkdownPlugin = (ctx) => () => {
         source.textContent = value
         preview.textContent = '正在渲染图表…'
         try {
+          const mermaid = await loadMermaid()
           const result = await mermaid.render(`remark-mermaid-${++mermaidRenderId}`, value)
           if (current !== version) return
           preview.innerHTML = sanitizeSvg(result.svg)

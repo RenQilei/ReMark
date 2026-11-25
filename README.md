@@ -144,7 +144,7 @@ Remark is in early development. Please evaluate it on copies of important docume
 
 - Current DMGs are unsigned prereleases; Apple notarization and stable Gatekeeper validation are not complete.
 - Visual editing may normalize some Markdown formatting. Unknown HTML and extension syntax are preserved through opaque nodes, but byte-for-byte source preservation is not guaranteed after a visual edit.
-- `@milkdown/plugin-diagram` is deprecated upstream. It is pinned and covered by Mermaid rendering tests; replacing it with a maintained adapter is a maintenance priority.
+- Mermaid diagrams use a maintained local adapter with native SVG text labels, strict sanitization, and on-demand renderer loading.
 - Split view, cloud sync, collaboration, a plugin system, AI features, custom theme files, automatic updates, and Mac App Store distribution are not included in this release.
 - This release targets macOS only. Windows and Linux installers are not currently provided.
 - The current app interface is Simplified Chinese. English UI localization is planned; the English documentation does not imply an English interface.
