@@ -2,6 +2,19 @@
 
 All notable changes to ReMark are documented here. Versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.1.0-alpha.4] - 2026-11-26
+
+### Fixed
+
+- Restored real viewport scaling with keyboard shortcuts, presets, and minus/plus controls, with zoom isolated to the active document tab. Zoom no longer changes only the displayed percentage.
+- Clarified that global settings apply to every document, tab, and window. Moved global settings to the application menu and removed the ambiguous toolbar entry.
+- Renamed visual editing mode to Preview throughout the interface and documentation.
+
+### Changed
+
+- Unified the user-facing application brand as ReMark, including the app bundle, executable, menus, documentation, release titles, and DMG filenames.
+- Preserved the existing bundle identifier, data directory, repository paths, protocols, environment variables, and internal compatibility identifiers.
+
 ## [0.1.0-alpha.3] - 2026-11-25
 
 ### Added
